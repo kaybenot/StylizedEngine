@@ -21,7 +21,7 @@ void GetLightingMain_float(float3 WorldPosition, out float3 Color, out float3 Di
     Light mainLight = GetMainLight(shadowCoord, WorldPosition, 1);
     
     Color = mainLight.color;
-    Direction = mainLight.direction;
+    Direction = normalize(mainLight.direction);
     DistanceAttenuation = mainLight.distanceAttenuation;
     ShadowAttenuation = mainLight.shadowAttenuation;
 
@@ -52,7 +52,7 @@ void ApplyAddidionalLighting_float(float4 Color, float3 Normal, float3 WorldPosi
     {
         Light additionalLight = GetAdditionalLight(i, WorldPosition);
 
-        float diffuse = normalize(dot(Normal, additionalLight.direction));
+        float diffuse = clamp(dot(Normal, additionalLight.direction), 0.0, 1.0);
         baseColor += float4(diffuse * additionalLight.color * additionalLight.distanceAttenuation * additionalLight.shadowAttenuation, 0.0);
     }
 
