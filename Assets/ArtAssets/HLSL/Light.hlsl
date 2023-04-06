@@ -4,12 +4,19 @@
 // Uncomment for intellisense
 //#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
+
+/**
+ * \brief 
+ * \param WorldPosition World pixel position
+ * \param Color Light color
+ * \param Direction Light direction (can exceed 0-1 range)
+ * \param DistanceAttenuation Light distance attenuation 
+ * \param ShadowAttenuation Shadow attenutaion
+ */
 void GetLightingMain_float(float3 WorldPosition, out float3 Color, out float3 Direction, out float DistanceAttenuation,
-    out float ShadowAttenuation)
+                           out float ShadowAttenuation)
 {
     #if defined(UNIVERSAL_LIGHTING_INCLUDED)
-
-    //float4 shadowCoord = TransformWorldToShadowCoord(WorldPosition);
 
     #if SHADOWS_SCREEN
         float4 clipPos = TransformWorldToHClip(WorldPosition);
