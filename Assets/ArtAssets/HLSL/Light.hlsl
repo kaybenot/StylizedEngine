@@ -1,9 +1,15 @@
 #ifndef CUSTOM_LIGHT_NODES
 #define CUSTOM_LIGHT_NODES
 
-// Uncomment for intellisense
-//#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+//#define UNITY_DECLARE_NORMALS_TEXTURE_INCLUDED
 
+// Uncomment for intellisense
+#if !defined(SHADERGRAPH_PREVIEW)
+
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareNormalsTexture.hlsl"
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+#endif
 
 /**
  * \brief 
@@ -70,6 +76,20 @@ void ApplyAddidionalLighting_float(float4 Color, float3 Normal, float3 WorldPosi
     OutColor = float4(1.0, 1.0, 1.0, 1.0);
 
     #endif
+}
+
+void GetCameraNormal_float(float2 ScreenPosition, out float3 Normal)
+{
+    #if defined(UNITY_DECLARE_NORMALS_TEXTURE_INCLUDED)
+    
+    Normal = SampleSceneNormals(ScreenPosition);
+    
+    #else
+
+    Normal = float3(0, 0, 0);
+
+    #endif
+    
 }
 
 #endif
