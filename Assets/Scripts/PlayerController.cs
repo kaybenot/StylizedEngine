@@ -31,11 +31,18 @@ public class PlayerController : MonoBehaviour
 
     private void RotatePlayer()
     {
-        var forward = mainCamera.transform.forward;
-        forward.z = 0f;
-        forward.Normalize();
+        var forwardCamera = mainCamera.transform.forward;
+        forwardCamera.z = 0f;
+        forwardCamera.Normalize();
 
-        input *= new Vector2(forward.x, forward.z);
+        var forwardPlayer = player.transform.forward;
+        forwardPlayer.z = 0f;
+        forwardPlayer.Normalize();
+
+        player.transform.forward = Vector3.RotateTowards(player.transform.forward,
+            new Vector3(input.x, player.transform.forward.y, input.y), player.RotationSpeed * Mathf.Deg2Rad, 1f);
+
+        //input *= new Vector2(forward.x, forward.z);
     }
 
     private void UpdateAnimator()
