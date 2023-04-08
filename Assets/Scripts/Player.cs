@@ -8,5 +8,4 @@ public class Player : MonoBehaviour
 {
     public float Speed = 1.5f;
     public float RunSpeed = 3f;
-    public float RotationSpeed = 90f;
 }

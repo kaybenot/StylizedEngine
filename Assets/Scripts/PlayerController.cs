@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour
 
     private void RotatePlayer()
     {
+        if (input == Vector2.zero)
+            return;
+        
         var forwardCamera = mainCamera.transform.forward;
         forwardCamera.y = 0f;
         forwardCamera.Normalize();
@@ -43,17 +46,18 @@ public class PlayerController : MonoBehaviour
         forwardPlayer.y = 0f;
         forwardPlayer.Normalize();
 
-        player.transform.forward = Vector3.RotateTowards(player.transform.forward,
-            (rightCamera * input.x + forwardCamera * input.y + Vector3.up * player.transform.forward.y).normalized,
-            player.RotationSpeed * Mathf.Deg2Rad, 1f);
+        // player.transform.forward = Vector3.RotateTowards(player.transform.forward,
+        //     (rightCamera * input.x + forwardCamera * input.y + Vector3.up * player.transform.forward.y).normalized,
+        //     player.RotationSpeed * Mathf.Deg2Rad * Time.fixedDeltaTime, 1f);
+        player.transform.forward = rightCamera * input.x + forwardCamera * input.y + Vector3.up * player.transform.forward.y;
     }
 
     private void UpdateAnimator()
     {
         var speed = running ? player.RunSpeed : player.Speed;
-        
-        animator.SetFloat(speedX, input.x * speed);
-        animator.SetFloat(speedY, input.y * speed);
+
+        animator.SetFloat(speedX, Mathf.Abs(input.x * speed));
+        animator.SetFloat(speedY, Mathf.Abs(input.y * speed));
     }
 
     public void Move(InputAction.CallbackContext context)
