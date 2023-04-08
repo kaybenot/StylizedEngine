@@ -671,7 +671,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 653e33c324b3e2143b1cf7f88a21ef4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 1
+  Speed: 3
+  RunSpeed: 6
   RotationSpeed: 90
 --- !u!114 &3471556175186188211
 MonoBehaviour:
@@ -715,6 +716,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5c3d0c61-0fd4-4a0f-a65e-95fe78d83f45
     m_ActionName: Player/Move[/XInputControllerWindows/leftStick]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3471556175186188212}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Run
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 870d8bdf-7c1a-4a82-a9a3-1b0be468964b
+    m_ActionName: Player/Run[/XInputControllerWindows/buttonWest]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Vector2 input = Vector2.zero;
     private Camera mainCamera;
+    private bool running = false;
 
     private void Awake()
     {
@@ -49,8 +50,10 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateAnimator()
     {
-        animator.SetFloat(speedX, input.x * player.Speed);
-        animator.SetFloat(speedY, input.y * player.Speed);
+        var speed = running ? player.RunSpeed : player.Speed;
+        
+        animator.SetFloat(speedX, input.x * speed);
+        animator.SetFloat(speedY, input.y * speed);
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -65,5 +68,13 @@ public class PlayerController : MonoBehaviour
             return;
 
         input = context.ReadValue<Vector2>();
+    }
+
+    public void Run(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            running = true;
+        if (context.canceled)
+            running = false;
     }
 }
