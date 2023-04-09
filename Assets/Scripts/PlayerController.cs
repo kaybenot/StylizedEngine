@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Player))]
+[RequireComponent(typeof(Player), typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
     private static readonly int speedX = Animator.StringToHash("speedX");
