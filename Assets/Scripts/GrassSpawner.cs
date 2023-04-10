@@ -8,13 +8,11 @@ public class GrassSpawner : MonoBehaviour
 {
     [SerializeField] private Material grassMaterial;
     [SerializeField] private Texture2D noiseTexture;
-    [SerializeField] private GameObject grassPrefab;
     [SerializeField] private int density = 1;
     
     private static readonly int Normal = Shader.PropertyToID("_Normal");
 
     private Terrain terrain;
-    private Renderer grassRenderer;
     private List<List<Matrix4x4>> matrices;
     private List<MaterialPropertyBlock> grassPropertyBlock;
     private Mesh mesh;
@@ -22,7 +20,6 @@ public class GrassSpawner : MonoBehaviour
     private void Awake()
     {
         terrain = Terrain.activeTerrain;
-        grassRenderer = GetComponent<Renderer>();
     }
 
     private void Start()
