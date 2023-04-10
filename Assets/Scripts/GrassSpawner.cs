@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[RequireComponent(typeof(Renderer))]
 public class GrassSpawner : MonoBehaviour
 {
     [SerializeField] private Material grassMaterial;
