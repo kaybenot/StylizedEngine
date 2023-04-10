@@ -19,6 +19,7 @@ public class GrassSpawner : MonoBehaviour
     private List<List<Matrix4x4>> matrices;
     private List<MaterialPropertyBlock> grassPropertyBlock;
     private Mesh mesh;
+    private int posX, posZ;
 
     private void Awake()
     {
@@ -84,6 +85,24 @@ public class GrassSpawner : MonoBehaviour
         mesh.uv = uv;
     }
 
+    private void ConvertPosition(Vector3 playerPosition)
+    {
+        var terrainPosition = playerPosition - terrain.transform.position;
+        var mapPosition = new Vector3
+        (terrainPosition.x / terrain.terrainData.size.x, 0,
+            terrainPosition.z / terrain.terrainData.size.z);
+        var xCoord = mapPosition.x * terrain.terrainData.alphamapWidth;
+        var zCoord = mapPosition.z * terrain.terrainData.alphamapHeight;
+        posX = (int)xCoord;
+        posZ = (int)zCoord;
+    }
+    
+    private Vector4 CheckTexture()
+    {
+        var aMap = terrain.terrainData.GetAlphamaps (posX, posZ, 1, 1);
+        return new Vector4(aMap[0, 0, 0], aMap[0, 0, 1], aMap[0, 0, 2], aMap[0, 0, 3]);
+    }
+    
     private void GenerateGrass()
     {
         var terrainSize = terrain.terrainData.size;
@@ -107,7 +126,7 @@ public class GrassSpawner : MonoBehaviour
                 region++;
                 i = 0;
             }
-            
+
             if (noiseTexture.GetPixel(x % noiseTexture.width, z % noiseTexture.height) != Color.black)
                 continue;
 
@@ -116,7 +135,12 @@ public class GrassSpawner : MonoBehaviour
             grassPos.y = terrain.SampleHeight(grassPos);
             var rotation = Quaternion.identity;
             var scale = Vector3.one;
-            
+
+            ConvertPosition(grassPos);
+            var alphaMap = CheckTexture();
+            if (alphaMap[0] <= 0.5f)
+                continue;
+
             matrices[region].Add(Matrix4x4.TRS(grassPos, rotation, scale));
 
             var normal = terrain.terrainData.GetInterpolatedNormal(grassPos.x, grassPos.z);
@@ -130,7 +154,7 @@ public class GrassSpawner : MonoBehaviour
 
     private void RenderGrass()
     {
-        for (int i = 0; i < matrices.Count; i++)
+        for (var i = 0; i < matrices.Count; i++)
             Graphics.DrawMeshInstanced(mesh, 0, grassMaterial, matrices[i], grassPropertyBlock[i], ShadowCastingMode.Off, true);
     }
 }

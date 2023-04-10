@@ -115,6 +115,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Is_Terrain: 0
     - _MAIN_LIGHT_SHADOWS: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -134,6 +135,7 @@ Material:
     - _Color: {r: 0.4811321, g: 0.37405953, b: 0.23375759, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainColor: {r: 0.5754717, g: 0.3448578, b: 0.14386792, a: 0}
+    - _Path_Color: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tint_Color: {r: 0.6037736, g: 0.40801236, b: 0.2306871, a: 0}
   m_BuildTextureStacks: []
