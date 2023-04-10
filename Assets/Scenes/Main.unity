@@ -768,9 +768,9 @@ Light:
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_Bias: 0.5
+    m_NormalBias: 3
+    m_NearPlane: 2
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Version: 1
-  m_UsePipelineSettings: 1
+  m_UsePipelineSettings: 0
   m_AdditionalLightsShadowResolutionTier: 2
   m_LightLayerMask: 1
   m_CustomShadowLayers: 0
@@ -1395,7 +1395,7 @@ MonoBehaviour:
   noiseTexture: {fileID: 2800000, guid: a25da8e87356b014d8928bd51f28f40d, type: 3}
   grassPrefab: {fileID: 8340832018970775779, guid: 23616473601f6594a9f91e2b24b46cd0,
     type: 3}
-  density: 3
+  density: 2
 --- !u!1 &1475461666
 GameObject:
   m_ObjectHideFlags: 0
@@ -1806,7 +1806,7 @@ PrefabInstance:
     - target: {fileID: 55101654645503806, guid: 39322847c5dbb024b95d7c8963f85467,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.39
+      value: 1.64
       objectReference: {fileID: 0}
     - target: {fileID: 55101654645503806, guid: 39322847c5dbb024b95d7c8963f85467,
         type: 3}
