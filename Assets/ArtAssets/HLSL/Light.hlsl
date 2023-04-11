@@ -60,10 +60,17 @@ void ApplyAddidionalLighting_float(float4 Color, float3 Normal, float3 WorldPosi
     #if defined(UNIVERSAL_LIGHTING_INCLUDED)
     
     float4 baseColor = Color;
+
+    #if SHADOWS_SCREEN
+        float4 clipPos = TransformWorldToHClip(WorldPosition);
+        float4 shadowCoord = ComputeScreenPos(clipPos);
+    #else
+        float4 shadowCoord = TransformWorldToShadowCoord(WorldPosition);
+    #endif
     
     for (int i = 0; i < GetAdditionalLightsCount(); i++)
     {
-        Light additionalLight = GetAdditionalLight(i, WorldPosition);
+        Light additionalLight = GetAdditionalLight(i, WorldPosition, 1);
 
         float diffuse = clamp(dot(Normal, additionalLight.direction), 0.0, 1.0);
         baseColor += float4(diffuse * additionalLight.color * additionalLight.distanceAttenuation * additionalLight.shadowAttenuation, 0.0);
