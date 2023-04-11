@@ -8,12 +8,12 @@ public class CameraFollow : MonoBehaviour
 {
     private Transform followTransform;
     private float input;
-    private float y;
+    private float fixedCameraPositionY;
 
     private void Start()
     {
         followTransform = FindObjectOfType<Player>().transform;
-        y = transform.position.y;
+        fixedCameraPositionY = transform.position.y;
         
         if (followTransform != null)
             TeleportCamera(followTransform.position);
@@ -24,21 +24,21 @@ public class CameraFollow : MonoBehaviour
         if (followTransform == null)
             return;
 
+        HandleCameraRotation();
         MoveCameraToPlayer();
-        RotateCamera();
     }
 
-    public void TeleportCamera(Vector3 lookPoint)
+    public void TeleportCamera(Vector3 lookTarget)
     {
-        transform.position = CameraPositionFromLookPoint(followTransform.position);
+        transform.position = GetLookPositionWithOffset(lookTarget);
     }
 
     private void MoveCameraToPlayer()
     {
-        transform.position = Vector3.Lerp(transform.position, CameraPositionFromLookPoint(followTransform.position), Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, GetLookPositionWithOffset(followTransform.position), Time.deltaTime);
     }
 
-    private void RotateCamera()
+    private void HandleCameraRotation()
     {
         if (input == 0f)
             return;
@@ -46,7 +46,12 @@ public class CameraFollow : MonoBehaviour
         transform.RotateAround(followTransform.position, Vector3.up, input);
     }
 
-    private Vector3 CameraPositionFromLookPoint(Vector3 point)
+    /// <summary>
+    /// Camera position helper function
+    /// </summary>
+    /// <param name="point">Target position</param>
+    /// <returns>Position which camera should be at to maintain target at center of the screen</returns>
+    private Vector3 GetLookPositionWithOffset(Vector3 point)
     {
         var forward = transform.forward;
         forward.y = 0f;
@@ -54,7 +59,7 @@ public class CameraFollow : MonoBehaviour
         
         var deltaY = transform.position.y - point.y;
         var target = point;
-        target.y = y;
+        target.y = fixedCameraPositionY;
         target.z -= deltaY * Mathf.Tan((90 - transform.rotation.eulerAngles.x) * Mathf.Deg2Rad) * forward.z;
         target.x -= deltaY * Mathf.Tan((90 - transform.rotation.eulerAngles.x) * Mathf.Deg2Rad) * forward.x;
 
