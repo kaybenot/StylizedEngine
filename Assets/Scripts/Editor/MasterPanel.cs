@@ -31,10 +31,15 @@ public class MasterPanel : EditorWindow
         if (Application.isPlaying)
         {
             // Play mode
+            GUILayout.Label("PLAY MODE", EditorStyles.boldLabel);
         }
         else
         {
             // Editor
         }
+        
+        GUILayout.Label("SAVE MANAGEMENT", EditorStyles.boldLabel);
+        if (GUILayout.Button("Open saves folder"))
+            Application.OpenURL(Globals.Instance.SavePath);
     }
 }

@@ -9,18 +9,18 @@ public interface ISaveManager
     /// Saves file at given directory path. Overwrites it if exists.
     /// Do not provide extensions.
     /// </summary>
-    /// <param name="directory">Directory path</param>
-    /// <param name="fileName">File name</param>
+    /// <param name="relativeDirectory">Relative directory path</param>
+    /// <param name="fileName">File name without extension</param>
     /// <param name="objectToSave">Serializable object to be saved</param>
-    /// <returns></returns>
-    bool SaveJson(string directory, string fileName, object objectToSave);
+    /// <returns>True if object has been saved</returns>
+    bool SaveJson(string fileName, object objectToSave, string relativeDirectory = null);
     /// <summary>
     /// Loads file and converts it to given type.
     /// Do not provide extensions.
     /// </summary>
-    /// <param name="directory"></param>
-    /// <param name="fileName"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    [CanBeNull] T LoadJson<T>(string directory, string fileName);
+    /// <param name="relativeDirectory">Relative directory path</param>
+    /// <param name="fileName">File name without extension</param>
+    /// <typeparam name="T">Object type</typeparam>
+    /// <returns>Object or null</returns>
+    [CanBeNull] T LoadJson<T>(string fileName, string relativeDirectory = null);
 }
