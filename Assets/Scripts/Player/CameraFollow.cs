@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,13 @@ public class CameraFollow : MonoBehaviour
         
         if (followTransform != null)
             TeleportCamera(followTransform.position);
+    }
+
+    private void OnValidate()
+    {
+        // Teleport camera to player spawner position
+        fixedCameraPositionY = transform.position.y;
+        TeleportCamera(FindObjectOfType<PlayerSpawner>().transform.position);
     }
 
     private void Update()
