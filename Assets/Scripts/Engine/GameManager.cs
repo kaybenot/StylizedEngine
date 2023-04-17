@@ -6,7 +6,4 @@ using Zenject;
 
 public class GameManager : Singleton<GameManager>
 {
-    private void Start()
-    {
-    }
 }
