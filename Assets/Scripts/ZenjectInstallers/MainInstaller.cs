@@ -8,5 +8,6 @@ public class MainInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<ISaveManager>().To<SaveManager>().AsSingle();
+        Container.Bind<ISession>().To<Session>().AsSingle();
     }
 }
