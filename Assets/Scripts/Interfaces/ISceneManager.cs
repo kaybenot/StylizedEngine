@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -11,5 +12,5 @@ public interface ISceneManager
     /// <param name="index">Scene build index</param>
     /// <param name="swapActive">If true, unloads currently active scene</param>
     /// <returns>UniTask with current progress</returns>
-    UniTask LoadSceneAddative(int index, bool swapActive = false);
+    UniTask LoadSceneAddative(int index, IProgress<float> progress, bool swapActive = false);
 }

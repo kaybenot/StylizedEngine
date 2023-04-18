@@ -10,6 +10,11 @@ public class SessionObject : MonoBehaviour, ISessionObject
 
     [Inject] private ISession session;
 
+    public virtual void OnSessionInitialized()
+    {
+        
+    }
+
     public bool SpawnFromData(Transform parent = null)
     {
         var data = session.GetData<ObjectData>(ID);

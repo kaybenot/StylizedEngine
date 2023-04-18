@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(Animator))]
-public class Player : MonoBehaviour, IMovable
+public class Player : SessionObject, IMovable
 {
     public float MoveSpeed = 1.5f;
     public float RunSpeed = 3f;
@@ -20,9 +21,14 @@ public class Player : MonoBehaviour, IMovable
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        
+    }
+
+    public override async void OnSessionInitialized()
+    {
+        base.OnSessionInitialized();
+
         // TODO: Temporary implementation, should take into consideration multiple players
-        playerCamera = Camera.main;
+        playerCamera = Utils.FindTypeOnScene<Camera>(gameObject.scene);
     }
 
     public void Move(Vector3 direction)
@@ -32,9 +38,6 @@ public class Player : MonoBehaviour, IMovable
         Rotate(direction);
 
         animator.SetFloat(speedY, Mathf.Abs(direction.magnitude * speed));
-        
-        // Currently not used
-        animator.SetFloat(speedX, Mathf.Abs(0f));
     }
     
     private void Rotate(Vector3 direction)

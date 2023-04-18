@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -6,16 +7,25 @@ using UnityEngine.SceneManagement;
 
 public class EngineSceneManager : ISceneManager
 {
-    public async UniTask LoadSceneAddative(int index, bool swapActive = false)
+    public async UniTask LoadSceneAddative(int index, IProgress<float> progress, bool swapActive = false)
     {
         var asyncOp = SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
 
-        await UniTask.WaitUntil(() => asyncOp.isDone);
+        while (!asyncOp.isDone)
+        {
+            await UniTask.Yield();
+            progress.Report(swapActive ? asyncOp.progress / 2f : asyncOp.progress);
+        }
 
         if (!swapActive)
             return;
         
         var asyncOpUnload = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-        await UniTask.WaitUntil(() => asyncOpUnload.isDone);
+
+        while (!asyncOpUnload.isDone)
+        {
+            await UniTask.Yield();
+            progress.Report(0.5f + asyncOpUnload.progress / 2f);
+        }
     }
 }

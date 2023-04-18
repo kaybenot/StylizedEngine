@@ -7,6 +7,8 @@ using Object = UnityEngine.Object;
 
 public interface ISession
 {
+    bool Initialized { get; }
+    
     void New();
     /// <summary>
     /// Loads session.
@@ -22,6 +24,12 @@ public interface ISession
     /// <param name="fileName">File name to be saved</param>
     /// <returns>True if loaded successfully</returns>
     bool Save(string relativeDirectory, string fileName);
+    /// <summary>
+    /// Initializes session after creating or loading one.
+    /// Should be called after creating all neccessary SessionObjects.
+    /// After initializing, added SessionObjects are going to be called when added.
+    /// </summary>
+    void Initialize();
     [CanBeNull] T GetData<T>(Guid id) where T : class;
     bool ContainsData(Guid id);
     bool TryAddData(ObjectData data);

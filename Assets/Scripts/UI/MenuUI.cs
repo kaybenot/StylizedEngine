@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -25,9 +26,16 @@ public class MenuUI : MonoBehaviour
         exitButton.clicked += ExitButton;
     }
 
-    private void StartButton()
+    private async void StartButton()
     {
-        sceneManager.LoadSceneAddative(startScene, true);
+        var progress = new Progress<float>();
+        var task = sceneManager.LoadSceneAddative(startScene, progress, true);
+
+        while (task.Status != UniTaskStatus.Succeeded)
+        {
+            await UniTask.Yield();
+            // TODO: Raport progress
+        }
     }
 
     private void SettingsButton()

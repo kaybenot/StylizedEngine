@@ -15,7 +15,9 @@ public class Session : ISession
     private SessionObject[] sessionObjectsCache;
 
     [Inject] private ISaveManager saveManager;
-    
+
+    public bool Initialized { get; private set; } = false;
+
     public void New()
     {
         ID = Guid.NewGuid();
@@ -37,6 +39,14 @@ public class Session : ISession
     public bool Save(string directory, string fileName)
     {
         return saveManager.SaveJson(fileName, this, directory);
+    }
+
+    public void Initialize()
+    {
+        foreach (var sessionObject in GetAllSessionObjects())
+            sessionObject.OnSessionInitialized();
+
+        Initialized = true;
     }
 
     public T GetData<T>(Guid id) where T : class
@@ -66,6 +76,9 @@ public class Session : ISession
     {
         var obj =  Object.Instantiate(data.Prefab, parent).GetComponent<SessionObject>();
         obj.ID = data.ID;
+        
+        if (Initialized)
+            obj.OnSessionInitialized();
 
         return obj;
     }
