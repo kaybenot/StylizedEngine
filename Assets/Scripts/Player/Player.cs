@@ -28,7 +28,10 @@ public class Player : SessionObject, IMovable
         base.OnSessionInitialized();
 
         // TODO: Temporary implementation, should take into consideration multiple players
-        playerCamera = Utils.FindTypeOnScene<Camera>(gameObject.scene);
+        var cameras = Utils.FindTypesOnScene<Camera>(gameObject.scene);
+        foreach (var cam in cameras)
+            if (cam.CompareTag("MainCamera"))
+                playerCamera = cam;
     }
 
     public void Move(Vector3 direction)
