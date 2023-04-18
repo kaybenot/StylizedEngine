@@ -6,7 +6,11 @@ using Zenject;
 
 public class Platform : Singleton<Platform>
 {
-    [Inject] private ISession session;
+    /// <summary>
+    /// Should not be used in other files, just inject it.
+    /// Public workaround for EditorWindow.
+    /// </summary>
+    [Inject] public ISession Session;
 
     private void Start()
     {
@@ -15,7 +19,7 @@ public class Platform : Singleton<Platform>
 
     private void InitializeEngine()
     {
-        session.New();
-        session.Initialize();
+        Session.New();
+        Session.Initialize();
     }
 }

@@ -45,6 +45,28 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
             return instance!;
         }
     }
+
+    public static bool HasInstance
+    {
+        get
+        {
+            if (instance)
+                return true;
+        
+            if (s_gameObject)
+            {
+                instance = s_gameObject.GetComponent<T>();
+                if (instance)
+                    return true;
+            }
+        
+            var objs = FindObjectsOfType<T>();
+            if (objs.Length > 0)
+                return true;
+
+            return false;
+        }
+    }
 }
 
 public abstract class Singleton : MonoBehaviour

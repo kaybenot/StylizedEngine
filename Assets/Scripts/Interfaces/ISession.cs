@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 public interface ISession
 {
+    Guid ID { get; }
     bool Initialized { get; }
     
     void New();

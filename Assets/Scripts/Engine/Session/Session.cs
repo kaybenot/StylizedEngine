@@ -9,9 +9,10 @@ using Object = UnityEngine.Object;
 [Serializable]
 public class Session : ISession
 {
-    public SerializableGuid ID;
+    [SerializeField] public Guid ID { get; private set; }
 
     [SerializeField] private List<ObjectData> datas;
+    [SerializeField] private SerializableGuid id;
     private SessionObject[] sessionObjectsCache;
 
     [Inject] private ISaveManager saveManager;
