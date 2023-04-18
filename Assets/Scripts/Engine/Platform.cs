@@ -13,7 +13,7 @@ public class Platform : Singleton<Platform>
         InitializeEngine();
     }
 
-    public void InitializeEngine()
+    private void InitializeEngine()
     {
         session.New();
         session.Initialize();

@@ -23,7 +23,7 @@ public class Player : SessionObject, IMovable
         animator = GetComponent<Animator>();
     }
 
-    public override async void OnSessionInitialized()
+    public override void OnSessionInitialized()
     {
         base.OnSessionInitialized();
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface ISessionObject
 {
-    Guid ID { get; set; }
+    SerializableGuid ID { get; set; }
     
     bool SpawnFromData(Transform parent = null);
 }

@@ -6,9 +6,15 @@ using Zenject;
 
 public class SessionObject : MonoBehaviour, ISessionObject
 {
-    public Guid ID { get; set; }
+    [field: SerializeField] public SerializableGuid ID { get; set; }
 
     [Inject] private ISession session;
+
+    private void OnValidate()
+    {
+        if (ID == Guid.Empty)
+            ID = Guid.NewGuid();
+    }
 
     public virtual void OnSessionInitialized()
     {
