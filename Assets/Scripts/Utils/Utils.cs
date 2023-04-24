@@ -21,4 +21,12 @@ public static class Utils
             types.AddRange(obj.GetComponentsInChildren<T>());
         return types;
     }
+
+    public static (string[] commandStack, string[] argumentStack) ParseCommand(string command)
+    {
+        var commandStackAndArgumentStack = command.Split(' ', 2);
+        var commandStack = commandStackAndArgumentStack[0].Split('.');
+        var argumentStack = commandStackAndArgumentStack[1].Split(' ');
+        return (commandStack, argumentStack);
+    }
 }
