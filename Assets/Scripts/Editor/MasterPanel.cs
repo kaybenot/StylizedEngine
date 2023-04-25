@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -7,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class MasterPanel : EditorWindow
 {
+    private int selectedScene = 0;
+    
     [MenuItem("Tools/Master Panel")]
     private static void Init()
     {
@@ -43,11 +46,27 @@ public class MasterPanel : EditorWindow
                 EditorSceneManager.OpenScene(SceneUtility.GetScenePathByBuildIndex(0));
                 EditorApplication.EnterPlaymode();
             }
+            
+            GUILayout.Space(20);
+            GUILayout.Label("Scene Management", EditorStyles.boldLabel);
+            selectedScene = EditorGUILayout.Popup("Choose scene", selectedScene, GetSceneNames().ToArray());
+            if (GUILayout.Button("Load"))
+                EditorSceneManager.OpenScene(SceneUtility.GetScenePathByBuildIndex(selectedScene));
         }
         
         GUILayout.Space(20);
         GUILayout.Label("SAVE MANAGEMENT", EditorStyles.boldLabel);
         if (GUILayout.Button("Open saves folder"))
             Application.OpenURL(Globals.Instance.SavePath);
+    }
+    
+    private List<string> GetSceneNames()
+    {
+        var scenes = new List<string>();
+        
+        for (var i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+            scenes.Add(Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i)));
+
+        return scenes;
     }
 }
