@@ -13,18 +13,30 @@ public class Platform : Singleton<Platform>
     /// </summary>
     [Inject] public ISession Session;
     [Inject] private ICommandProcessor commandProcessor;
+    [Inject] private ISceneManager sceneManager;
 
     private void Start()
     {
         InitializeEngine();
     }
 
-    private void InitializeEngine()
+    public void StartGame()
     {
         FindAndAddCommandListeners();
         
         Session.New();
         Session.Initialize();
+    }
+
+    private async void InitializeEngine()
+    {
+        // Load UI
+        await sceneManager.LoadSceneAddative(1, null);
+        
+        // Load Menu
+        await sceneManager.LoadSceneAddative(2, null, true);
+        
+        UIManager.Instance.ShowScreen(UIScreen.Menu);
     }
 
     private void FindAndAddCommandListeners()
