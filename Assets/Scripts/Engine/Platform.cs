@@ -20,6 +20,13 @@ public class Platform : Singleton<Platform>
         InitializeEngine();
     }
 
+    private void Update()
+    {
+        // Main platform loop
+        while (commandProcessor.HasPendingCommands())
+            commandProcessor.ProcessCommand();
+    }
+
     public void StartGame()
     {
         FindAndAddCommandListeners();

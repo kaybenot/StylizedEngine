@@ -37,7 +37,13 @@ public class MenuUI : MonoBehaviour
             // TODO: Raport progress
         }
 
-        Platform.Instance.StartGame();
+        await UniTask.Create(() =>
+        {
+            Platform.Instance.StartGame();
+            return UniTask.CompletedTask;
+        });
+        
+        UIManager.Instance.HideScreen();
     }
 
     private void OnSettingsPressed()

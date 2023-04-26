@@ -175,6 +175,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Console",
+            "id": "be0386ad-de84-4858-989b-e28ccd6187e6",
+            "actions": [
+                {
+                    "name": "Toggle",
+                    "type": "Button",
+                    "id": "6c0f5a2b-1833-4c48-8067-960ee15ec23b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ace033f4-4046-49a7-9221-66c9d6c4527e",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

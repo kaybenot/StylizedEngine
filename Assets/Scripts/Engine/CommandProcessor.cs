@@ -10,7 +10,7 @@ public class CommandProcessor : ICommandProcessor
 
     public void Push(string command)
     {
-        commandQueue.Enqueue(command);
+        commandQueue.Enqueue(command.ToLower());
     }
 
     public void ProcessCommand()
