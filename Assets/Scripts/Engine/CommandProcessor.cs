@@ -13,15 +13,28 @@ public class CommandProcessor : ICommandProcessor
         commandQueue.Enqueue(command.ToLower());
     }
 
-    public void ProcessCommand()
+    public string ProcessCommand()
     {
         if (commandQueue.Count <= 0)
-            return;
+            return "";
         
         var cmd = ReinterprateCommand(commandQueue.Dequeue());
 
-        foreach (var listener in listeners.Where(l => l.Name == cmd.listenerName))
-            listener.ProcessCommand(cmd.listenerCommand);
+        if (!cmd.parseSuccess)
+            return "Failed to parse command. A proper command should look like: listener.command param0 param1...";
+        
+        var _listeners = listeners.Where(l => l.Name == cmd.listenerName).ToArray();
+        if (!_listeners.Any())
+            return "There is no listener to that command.";
+        
+        var log = "";
+        foreach (var listener in _listeners)
+            log += $"{listener.ProcessCommand(cmd.listenerCommand)}\n";
+
+        if (log.EndsWith('\n'))
+            log.Remove(log.Length - 1);
+
+        return log;
     }
 
     public void AddListener(ICommandListener listener)
@@ -41,9 +54,13 @@ public class CommandProcessor : ICommandProcessor
         return commandQueue.Count > 0;
     }
 
-    private static (string listenerName, string listenerCommand) ReinterprateCommand(string command)
+    private static (bool parseSuccess, string listenerName, string listenerCommand) ReinterprateCommand(string command)
     {
+        var parseSuccess = false;
         var split = command.Split('.', 2);
-        return (split[0], split[1]);
+        if (split.Length == 2)
+            parseSuccess = true;
+        
+        return parseSuccess ? (true, split[0], split[1]) : (false, null, null);
     }
 }

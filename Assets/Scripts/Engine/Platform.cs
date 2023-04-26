@@ -9,7 +9,7 @@ public class Platform : Singleton<Platform>
 {
     /// <summary>
     /// Should not be used in other files, just inject it.
-    /// Public workaround for EditorWindow.
+    /// This field is public because it is a workaround for EditorWindow.
     /// </summary>
     [Inject] public ISession Session;
     [Inject] private ICommandProcessor commandProcessor;
@@ -24,7 +24,11 @@ public class Platform : Singleton<Platform>
     {
         // Main platform loop
         while (commandProcessor.HasPendingCommands())
-            commandProcessor.ProcessCommand();
+        {
+            var log = commandProcessor.ProcessCommand();
+            if (log != "")
+                UIManager.Instance.LogConsole(log);
+        }
     }
 
     public void StartGame()

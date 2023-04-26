@@ -23,7 +23,17 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject console;
 
     private GameObject lastScreen = null;
+    private Console consoleComponent;
     private List<UIWindow> openWindows = new();
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        consoleComponent = console.GetComponent<Console>();
+        if (consoleComponent == null)
+            Debug.LogError("UIManager did not find Console!");
+    }
 
     public void ShowScreen(UIScreen screen)
     {
@@ -66,6 +76,11 @@ public class UIManager : Singleton<UIManager>
             openWindows.Remove(window);
         else
             openWindows.Add(window);
+    }
+
+    public void LogConsole(string log)
+    {
+        consoleComponent.LogConsole(log);
     }
 
     public void ToggleConsole(InputAction.CallbackContext context)
