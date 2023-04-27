@@ -28,14 +28,11 @@ public class MenuUI : MonoBehaviour
 
     private async void OnStartPressed()
     {
-        var progress = new Progress<float>();
-        var task = sceneManager.LoadSceneAddative(startScene, progress, true, true);
-
-        while (task.Status != UniTaskStatus.Succeeded)
-        {
-            await UniTask.Yield();
-            // TODO: Raport progress
-        }
+        UIManager.Instance.ToggleWindow(UIWindow.Loading);
+        UIManager.Instance.RaportProgress(0f, "Loading game...");
+        
+        var progress = new Progress<float>((val) => UIManager.Instance.RaportProgress(val));
+        await sceneManager.LoadSceneAddative(startScene, progress, true, true);
 
         await UniTask.Create(() =>
         {
@@ -43,6 +40,7 @@ public class MenuUI : MonoBehaviour
             return UniTask.CompletedTask;
         });
         
+        UIManager.Instance.ToggleWindow(UIWindow.Loading);
         UIManager.Instance.HideScreen();
     }
 

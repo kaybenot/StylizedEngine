@@ -13,7 +13,8 @@ public enum UIScreen
 
 public enum UIWindow
 {
-    Console
+    Console,
+    Loading
 }
 
 [RequireComponent(typeof(PlayerInput))]
@@ -21,10 +22,12 @@ public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject console;
+    [SerializeField] private GameObject loading;
 
     private GameObject lastScreen = null;
     private Console consoleComponent;
-    private List<UIWindow> openWindows = new();
+    private Loading loadingComponent;
+    private readonly List<UIWindow> openWindows = new();
 
     protected override void Awake()
     {
@@ -33,6 +36,10 @@ public class UIManager : Singleton<UIManager>
         consoleComponent = console.GetComponent<Console>();
         if (consoleComponent == null)
             Debug.LogError("UIManager did not find Console!");
+
+        loadingComponent = loading.GetComponent<Loading>();
+        if (loadingComponent == null)
+            Debug.LogError("UIManager did not find Loading!");
     }
 
     public void ShowScreen(UIScreen screen)
@@ -61,12 +68,15 @@ public class UIManager : Singleton<UIManager>
 
     public void ToggleWindow(UIWindow window)
     {
-        var contains = openWindows.Contains(UIWindow.Console);
+        var contains = openWindows.Contains(window);
         
         switch (window)
         {
             case UIWindow.Console:
                 console.SetActive(!contains);
+                break;
+            case UIWindow.Loading:
+                loading.SetActive(!contains);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(window), window, null);
@@ -76,6 +86,11 @@ public class UIManager : Singleton<UIManager>
             openWindows.Remove(window);
         else
             openWindows.Add(window);
+    }
+
+    public void RaportProgress(float val, string text = null)
+    {
+        loadingComponent.RaportProgress(val, text);
     }
 
     public void LogConsole(string log)
