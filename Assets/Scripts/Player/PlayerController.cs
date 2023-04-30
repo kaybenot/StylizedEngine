@@ -1,48 +1,36 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
-[RequireComponent(typeof(Player), typeof(PlayerInput))]
-public class PlayerController : MonoBehaviour
+[RequireComponent(typeof(Player))]
+public class PlayerController : ZenAutoInjecter
 {
-    private Player player;
-    private Vector3 input;
+    [Inject] private IInputManager inputManager;
 
-    private void Awake()
+    private Player player;
+
+    private void Start()
     {
         player = GetComponent<Player>();
+
+        GameManager.Instance.OnGameReady += () =>
+        {
+            inputManager.OnMoveInput += OnMove;
+            inputManager.OnRun += OnRun;
+        };
     }
 
-    public void Move(InputAction.CallbackContext context)
+    private void OnMove(Vector2 input)
     {
-        if (context.canceled)
-        {
-            player.Move(Vector3.zero);
-            input = Vector3.zero;
-            return;
-        }
-        
-        if (!context.performed)
-            return;
-
-        var moveInput = context.ReadValue<Vector2>();
-        input = new Vector3(moveInput.x, 0f, moveInput.y);
-        player.Move(input);
+        player.Move(new Vector3(input.x, 0f, input.y));
     }
 
-    public void Run(InputAction.CallbackContext context)
+    private void OnRun(bool running)
     {
-        if (context.started)
-        {
-            player.Running = true;
-            player.Move(input);
-        }
-        if (context.canceled)
-        {
-            player.Running = false;
-            player.Move(input);
-        }
+        player.Running = running;
     }
 }

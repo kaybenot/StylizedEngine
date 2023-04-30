@@ -3,21 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 [RequireComponent(typeof(Camera), typeof(PlayerInput))]
 public class CameraFollow : MonoBehaviour
 {
+    [Inject] private IInputManager inputManager;
+    
     private Transform followTransform;
     private float input;
     private float fixedCameraPositionY;
 
     private void Start()
     {
+        GameManager.Instance.OnGameReady += OnGameReady;
+    }
+
+    private void OnGameReady()
+    {
         followTransform = FindObjectOfType<Player>().transform;
         fixedCameraPositionY = transform.position.y;
         
         if (followTransform != null)
             TeleportCamera(followTransform.position);
+
+        inputManager.OnLookInput += OnLook;
     }
 
     private void OnValidate()
@@ -74,11 +84,8 @@ public class CameraFollow : MonoBehaviour
         return target;
     }
 
-    public void Look(InputAction.CallbackContext context)
+    private void OnLook(float input)
     {
-        if (context.performed)
-            input = context.ReadValue<float>();
-        if (context.canceled)
-            input = 0f;
+        this.input = input;
     }
 }

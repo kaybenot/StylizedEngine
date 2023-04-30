@@ -9,6 +9,7 @@ public interface ISession
 {
     Guid ID { get; }
     bool Initialized { get; }
+    Action OnInitialized { get; set; }
     
     void New();
     /// <summary>

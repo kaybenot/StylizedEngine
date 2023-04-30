@@ -6,4 +6,25 @@ using Zenject;
 
 public class GameManager : Singleton<GameManager>
 {
+    public Action OnGameReady
+    {
+        get => onGameReady;
+        set
+        {
+            if (readyCalled)
+                value?.Invoke();
+            else
+                onGameReady += value;
+        }
+    }
+
+    private Action onGameReady;
+    private bool readyCalled = false;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        onGameReady += () => readyCalled = true;
+    }
 }

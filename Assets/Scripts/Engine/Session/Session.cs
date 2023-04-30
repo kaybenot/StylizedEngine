@@ -18,6 +18,7 @@ public class Session : ISession
     [Inject] private ISaveManager saveManager;
 
     public bool Initialized { get; private set; } = false;
+    public Action OnInitialized { get; set; }
 
     public void New()
     {
@@ -48,6 +49,7 @@ public class Session : ISession
             sessionObject.OnSessionInitialized();
 
         Initialized = true;
+        OnInitialized?.Invoke();
     }
 
     public T GetData<T>(Guid id) where T : class
@@ -75,7 +77,7 @@ public class Session : ISession
 
     public SessionObject TrySpawnObject(ObjectData data, Transform parent = null)
     {
-        var obj =  Object.Instantiate(data.Prefab, parent).GetComponent<SessionObject>();
+        var obj = Object.Instantiate(data.Prefab, data.Position, data.Rotation, parent).GetComponent<SessionObject>();
         obj.ID = data.ID;
         
         if (Initialized)

@@ -8,6 +8,6 @@ public class ObjectData
 {
     public SerializableGuid ID;
     public Vector3 Position;
-    public Vector3 Rotation;
+    public Quaternion Rotation;
     public GameObject Prefab;
 }

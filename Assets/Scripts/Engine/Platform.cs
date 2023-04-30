@@ -35,6 +35,8 @@ public class Platform : Singleton<Platform>
     {
         Session.New();
         Session.Initialize();
+        
+        GameManager.Instance.OnGameReady?.Invoke();
     }
 
     private async void InitializeEngine()
