@@ -33,8 +33,6 @@ public class Platform : Singleton<Platform>
 
     public void StartGame()
     {
-        FindAndAddCommandListeners();
-        
         Session.New();
         Session.Initialize();
     }
@@ -48,15 +46,5 @@ public class Platform : Singleton<Platform>
         await sceneManager.LoadSceneAddative(2, null, true);
         
         UIManager.Instance.ShowScreen(UIScreen.Menu);
-    }
-
-    private void FindAndAddCommandListeners()
-    {
-        var type = typeof(ICommandListener);
-        var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
-            .Where(t => type.IsAssignableFrom(t) && !t.IsInterface);
-
-        foreach (var t in types)
-            commandProcessor.AddListener((ICommandListener)t);
     }
 }

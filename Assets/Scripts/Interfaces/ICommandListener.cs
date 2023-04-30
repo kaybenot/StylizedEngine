@@ -6,11 +6,12 @@ using UnityEngine;
 public interface ICommandListener
 {
     string Name { get; }
-    
+
     /// <summary>
     /// Processes one pending command. Should be called after initialized session!
     /// </summary>
     /// <param name="command">Command to be processed</param>
+    /// <param name="args"></param>
     /// <returns>Command log, or empty string</returns>
-    [return: NotNull] string ProcessCommand(string command);
+    [return: NotNull] string ProcessCommand(string command, string[] args);
 }
