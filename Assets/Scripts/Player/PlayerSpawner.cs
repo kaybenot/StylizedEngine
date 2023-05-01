@@ -9,11 +9,6 @@ public class PlayerSpawner : MonoBehaviour, ISpawner
     [SerializeField] private GameObject playerPrefab;
 
     [Inject] private ISession session;
-    
-    /// <summary>
-    /// Temporary field ensuring that no more than 1 player is present
-    /// </summary>
-    private static bool spawned = false;
 
     private void Start()
     {
@@ -25,19 +20,16 @@ public class PlayerSpawner : MonoBehaviour, ISpawner
         Gizmos.DrawIcon(transform.position, "spawner.png");
     }
 
+    /// <summary>
+    /// Spawning multiple players is undefined for now.
+    /// </summary>
     public void Spawn()
     {
-        if (spawned)
-            throw new NotImplementedException("Spawning multiple players is not implemented!");
-
-        var player = session.TrySpawnObject(new ObjectData()
+        session.TrySpawnObject(new ObjectData()
         {
             Prefab = playerPrefab,
             Position = transform.position,
             Rotation = Quaternion.identity
         });
-        
-        if (player != null)
-            spawned = true;
     }
 }

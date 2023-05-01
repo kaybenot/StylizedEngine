@@ -15,5 +15,6 @@ public interface ISceneManager
     /// <param name="setAsActive">Marks scene as active when true</param>
     /// <param name="swapActive">If true, unloads currently active scene</param>
     /// <returns>UniTask with current progress</returns>
-    UniTask LoadSceneAddative(int index, [CanBeNull] IProgress<float> progress, bool setAsActive = false, bool swapActive = false);
+    UniTask LoadSceneAdditive(int index, [CanBeNull] IProgress<float> progress, bool setAsActive = false, bool swapActive = false);
+    UniTask UnloadActiveScene(IProgress<float> progress);
 }

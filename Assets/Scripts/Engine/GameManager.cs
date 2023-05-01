@@ -18,6 +18,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public bool GameStarted => readyCalled;
+
     private Action onGameReady;
     private bool readyCalled = false;
 

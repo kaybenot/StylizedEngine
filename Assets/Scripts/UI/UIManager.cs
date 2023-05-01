@@ -9,6 +9,7 @@ using Zenject;
 public enum UIScreen
 {
     Menu,
+    Pause,
     None
 }
 
@@ -24,6 +25,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject console;
     [SerializeField] private GameObject loading;
+    [SerializeField] private GameObject pauseMenu;
 
     [Inject] private IPauseManager pauseManager;
 
@@ -58,6 +60,11 @@ public class UIManager : Singleton<UIManager>
                 break;
             case UIScreen.None:
                 // Show empty screen
+                lastScreen = null;
+                break;
+            case UIScreen.Pause:
+                pauseMenu.SetActive(true);
+                lastScreen = pauseMenu;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(screen), screen, null);
@@ -95,9 +102,9 @@ public class UIManager : Singleton<UIManager>
             openWindows.Add(window);
     }
 
-    public void RaportProgress(float val, string text = null)
+    public void ReportProgress(float val, string text = null)
     {
-        loadingComponent.RaportProgress(val, text);
+        loadingComponent.ReportProgress(val, text);
     }
 
     public void LogConsole(string log)
@@ -107,7 +114,13 @@ public class UIManager : Singleton<UIManager>
 
     public void ToggleConsole(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && GameManager.HasInstance && GameManager.Instance.GameStarted)
             ToggleWindow(UIWindow.Console);
+    }
+
+    public void TogglePauseMenu(InputAction.CallbackContext context)
+    {
+        if (context.started && GameManager.HasInstance && GameManager.Instance.GameStarted)
+            ShowScreen(lastScreen == pauseMenu ? UIScreen.None : UIScreen.Pause);
     }
 }

@@ -29,10 +29,10 @@ public class MenuUI : MonoBehaviour
     private async void OnStartPressed()
     {
         UIManager.Instance.ToggleWindow(UIWindow.Loading);
-        UIManager.Instance.RaportProgress(0f, "Loading game...");
+        UIManager.Instance.ReportProgress(0f, "Loading game...");
         
-        var progress = new Progress<float>((val) => UIManager.Instance.RaportProgress(val));
-        await sceneManager.LoadSceneAddative(startScene, progress, true, true);
+        var progress = new Progress<float>((val) => UIManager.Instance.ReportProgress(val));
+        await sceneManager.LoadSceneAdditive(startScene, progress, true, true);
 
         await UniTask.Create(() =>
         {

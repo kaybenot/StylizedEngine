@@ -169,13 +169,22 @@
             ]
         },
         {
-            "name": "Console",
+            "name": "UI",
             "id": "be0386ad-de84-4858-989b-e28ccd6187e6",
             "actions": [
                 {
-                    "name": "Toggle",
+                    "name": "ToggleConsole",
                     "type": "Button",
                     "id": "6c0f5a2b-1833-4c48-8067-960ee15ec23b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TogglePauseMenu",
+                    "type": "Button",
+                    "id": "3ade18db-f9b3-455b-9deb-052e7b018dbc",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -190,7 +199,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Toggle",
+                    "action": "ToggleConsole",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0618c782-f32e-4c87-8339-46e4e39be10b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TogglePauseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

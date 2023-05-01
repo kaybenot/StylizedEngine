@@ -38,6 +38,15 @@ public class Session : ISession
         return true;
     }
 
+    public void Unload()
+    {
+        ID = Guid.Empty;
+        datas = null;
+        OnInitialized = null;
+        Initialized = false;
+        sessionObjectsCache = null;
+    }
+
     public bool Save(string directory, string fileName)
     {
         return saveManager.SaveJson(fileName, this, directory);

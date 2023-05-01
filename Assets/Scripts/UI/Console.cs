@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 public class Console : MonoBehaviour
@@ -15,6 +17,13 @@ public class Console : MonoBehaviour
     private void Awake()
     {
         commandField.onSubmit.AddListener(OnCommandSent);
+    }
+
+    private async void OnEnable()
+    {
+        await UniTask.Yield(); // Strangely you have to wait one frame after enabling input field to activate it
+        
+        commandField.ActivateInputField();
     }
 
     public void LogConsole(string log)

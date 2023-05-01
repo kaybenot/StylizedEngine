@@ -8,6 +8,12 @@ public class CommandProcessor : ICommandProcessor
     private readonly Queue<string> commandQueue = new();
     private readonly List<ICommandListener> listeners = new();
 
+    public void Reset()
+    {
+        commandQueue.Clear();
+        listeners.Clear();
+    }
+
     public void Push(string command)
     {
         commandQueue.Enqueue(command.ToLower());

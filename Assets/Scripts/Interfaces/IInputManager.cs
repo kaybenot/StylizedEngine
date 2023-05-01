@@ -6,6 +6,7 @@ using UnityEngine;
 /// <summary>
 /// Manages game input.
 /// UI should not be affected.
+/// Reset it when creating new Game session.
 /// </summary>
 public interface IInputManager
 {
@@ -16,4 +17,6 @@ public interface IInputManager
     Action<float> OnLookInput { get; set; }
     Action<bool> OnRun { get; set; }
     bool InputBlocked { get; set; }
+
+    void Reset();
 }

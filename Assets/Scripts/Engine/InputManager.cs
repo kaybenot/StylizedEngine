@@ -44,4 +44,12 @@ public class InputManager : IInputManager
     private Action<Vector2> onMoveInput;
     private Action<float> onLookInput;
     private Action<bool> onRun;
+    
+    public void Reset()
+    {
+        onMoveInput = null;
+        onLookInput = null;
+        onRun = null;
+        inputBlocked = false;
+    }
 }

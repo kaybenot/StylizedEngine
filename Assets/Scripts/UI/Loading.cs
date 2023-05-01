@@ -6,7 +6,7 @@ public class Loading : MonoBehaviour
 {
     [SerializeField] private ProgressBar progressBar;
     
-    public void RaportProgress(float val, string text = null)
+    public void ReportProgress(float val, string text = null)
     {
         progressBar.Progress = val;
         if (text != null)

@@ -19,6 +19,7 @@ public interface ISession
     /// <param name="fileName">File name to be saved</param>
     /// <returns>True if loaded successfully</returns>
     bool Load(string relativeDirectory, string fileName);
+    void Unload();
     /// <summary>
     /// Saves session
     /// </summary>

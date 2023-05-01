@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class EngineSceneManager : ISceneManager
 {
-    public async UniTask LoadSceneAddative(int index, IProgress<float> progress, bool setAsActive = false, bool swapActive = false)
+    public async UniTask LoadSceneAdditive(int index, IProgress<float> progress, bool setAsActive = false, bool swapActive = false)
     {
         var asyncOp = SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
 
@@ -33,5 +33,17 @@ public class EngineSceneManager : ISceneManager
         
         if (setAsActive)
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(index));
+    }
+
+    public async UniTask UnloadActiveScene(IProgress<float> progress)
+    {
+        var activeIndex = SceneManager.GetActiveScene().buildIndex;
+
+        var asyncOp = SceneManager.UnloadSceneAsync(activeIndex);
+        while (!asyncOp.isDone)
+        {
+            await UniTask.Yield();
+            progress?.Report(asyncOp.progress);
+        }
     }
 }

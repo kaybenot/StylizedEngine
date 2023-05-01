@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -12,41 +13,22 @@ public class Platform : Singleton<Platform>
     /// This field is public because it is a workaround for EditorWindow.
     /// </summary>
     [Inject] public ISession Session;
-    [Inject] private ICommandProcessor commandProcessor;
     [Inject] private ISceneManager sceneManager;
+    [Inject] private IEngine engine;
 
-    private void Start()
+    private async void Start()
     {
-        InitializeEngine();
+        await engine.Load();
     }
 
     private void Update()
     {
-        // Main platform loop
-        while (commandProcessor.HasPendingCommands())
-        {
-            var log = commandProcessor.ProcessCommand();
-            if (log != "")
-                UIManager.Instance.LogConsole(log);
-        }
+        engine.ProcessPendingCommands();
     }
 
-    public void StartGame()
+    public async void StartGame()
     {
-        Session.New();
-        Session.Initialize();
-        
+        await engine.LoadGame();
         GameManager.Instance.OnGameReady?.Invoke();
-    }
-
-    private async void InitializeEngine()
-    {
-        // Load UI
-        await sceneManager.LoadSceneAddative(1, null);
-        
-        // Load Menu
-        await sceneManager.LoadSceneAddative(2, null, true);
-        
-        UIManager.Instance.ShowScreen(UIScreen.Menu);
     }
 }
