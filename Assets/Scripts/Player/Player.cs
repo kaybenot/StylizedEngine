@@ -9,14 +9,24 @@ public class Player : SessionObject, IMovable
 {
     public float MoveSpeed = 1.5f;
     public float RunSpeed = 3f;
-    
-    public bool Running { get; set; }
+
+    public bool Running
+    {
+        get => running;
+        set
+        {
+            running = value;
+            UpdateMove();
+        }
+    }
     
     private static readonly int speedX = Animator.StringToHash("speedX");
     private static readonly int speedY = Animator.StringToHash("speedY");
 
     private Animator animator;
     private Camera playerCamera;
+    private Vector3 lastMoveDirection;
+    private bool running = false;
 
     private void Awake()
     {
@@ -34,9 +44,18 @@ public class Player : SessionObject, IMovable
                 playerCamera = cam;
     }
 
+    /// <summary>
+    /// Call it when something when something related with movement state changes. (ex. camera angle)
+    /// </summary>
+    public void UpdateMove()
+    {
+        Move(lastMoveDirection);
+    }
+
     public void Move(Vector3 direction)
     {
         var speed = Running ? RunSpeed : MoveSpeed;
+        lastMoveDirection = direction;
         
         Rotate(direction);
 

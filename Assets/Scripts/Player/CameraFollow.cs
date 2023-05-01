@@ -5,12 +5,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-[RequireComponent(typeof(Camera), typeof(PlayerInput))]
+[RequireComponent(typeof(Camera))]
 public class CameraFollow : MonoBehaviour
 {
     [Inject] private IInputManager inputManager;
     
     private Transform followTransform;
+    private Player player;
     private float input;
     private float fixedCameraPositionY;
 
@@ -21,7 +22,8 @@ public class CameraFollow : MonoBehaviour
 
     private void OnGameReady()
     {
-        followTransform = FindObjectOfType<Player>().transform;
+        player = FindObjectOfType<Player>();
+        followTransform = player.transform;
         fixedCameraPositionY = transform.position.y;
         
         if (followTransform != null)
@@ -62,6 +64,7 @@ public class CameraFollow : MonoBehaviour
             return;
 
         transform.RotateAround(followTransform.position, Vector3.up, input);
+        player.UpdateMove();
     }
 
     /// <summary>

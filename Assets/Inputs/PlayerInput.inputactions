@@ -2,7 +2,7 @@
     "name": "PlayerInput",
     "maps": [
         {
-            "name": "Player",
+            "name": "Game",
             "id": "fd84f7a0-81dc-41df-9c85-12a3c393703c",
             "actions": [
                 {
@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "7909cff9-15d6-4614-9813-08bb55148767",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -112,27 +121,10 @@
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Camera",
-            "id": "7e99d950-a012-41e8-a8d0-304fd067546d",
-            "actions": [
-                {
-                    "name": "Look",
-                    "type": "Value",
-                    "id": "df70b3bf-805a-4064-ad46-b32ff39b95fd",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "d5708a2d-9524-4027-bb9d-7f95db08a5b1",
+                    "id": "a744a9f4-f01e-40e1-b40f-9e81eaae3fd4",
                     "path": "<Gamepad>/rightStick/x",
                     "interactions": "",
                     "processors": "",
@@ -143,7 +135,7 @@
                 },
                 {
                     "name": "Keyboard",
-                    "id": "8198467c-0ae6-4ae3-a3bc-939fcdb65a64",
+                    "id": "1ce8a62a-56fd-4f7d-9077-2162c997986c",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
@@ -154,7 +146,7 @@
                 },
                 {
                     "name": "negative",
-                    "id": "67d87a33-260e-4c38-96d9-7e46c896375c",
+                    "id": "3455d12b-b137-47fa-9258-1efe2ee7107b",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
@@ -165,7 +157,7 @@
                 },
                 {
                     "name": "positive",
-                    "id": "10ac35ab-94d7-4f14-9bd4-d10c2e50a123",
+                    "id": "38e9051e-9d25-415b-8fae-695face2aa08",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
