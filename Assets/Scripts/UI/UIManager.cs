@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public enum UIScreen
 {
@@ -23,6 +24,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject console;
     [SerializeField] private GameObject loading;
+
+    [Inject] private IPauseManager pauseManager;
 
     private GameObject lastScreen = null;
     private Console consoleComponent;
@@ -74,6 +77,10 @@ public class UIManager : Singleton<UIManager>
         {
             case UIWindow.Console:
                 console.SetActive(!contains);
+                if (!contains) // opened
+                    pauseManager.Pause();
+                else // closed
+                    pauseManager.Unpause();
                 break;
             case UIWindow.Loading:
                 loading.SetActive(!contains);

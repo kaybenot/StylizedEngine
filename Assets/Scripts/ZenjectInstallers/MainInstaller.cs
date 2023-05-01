@@ -12,5 +12,6 @@ public class MainInstaller : MonoInstaller
         Container.Bind<ISceneManager>().To<EngineSceneManager>().AsSingle();
         Container.Bind<ICommandProcessor>().To<CommandProcessor>().AsSingle();
         Container.Bind<IInputManager>().To<InputManager>().AsSingle();
+        Container.Bind<IPauseManager>().To<PauseManager>().AsSingle();
     }
 }
