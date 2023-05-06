@@ -18,4 +18,5 @@ public interface ICommandProcessor
     [NotNull] string ProcessCommand();
     void AddListener(ICommandListener listener);
     bool HasPendingCommands();
+    int GetListenerCount();
 }

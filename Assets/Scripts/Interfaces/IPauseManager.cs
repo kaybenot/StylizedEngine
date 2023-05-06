@@ -6,6 +6,7 @@ using UnityEngine;
 public interface IPauseManager
 {
     Action<bool> OnPauseChanged { get; set; }
+    bool Paused { get; }
 
     void Pause();
     void Unpause();

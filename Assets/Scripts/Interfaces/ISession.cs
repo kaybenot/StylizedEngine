@@ -35,6 +35,7 @@ public interface ISession
     void Initialize();
     [CanBeNull] T GetData<T>(Guid id) where T : class;
     bool ContainsData(Guid id);
+    int GetDataCount();
     bool TryAddData(ObjectData data);
     /// <summary>
     /// Spawns object using provided data.

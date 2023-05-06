@@ -71,6 +71,11 @@ public class GameTime : SessionObject, ICommandListener
         SetTime(h % 24, m % 60, s % 60);
     }
 
+    public (int hour, int minute, int second) GetTime()
+    {
+        return data.CurrentTime;
+    }
+
     public string ProcessCommand(string command, string[] args)
     {
         switch (command)

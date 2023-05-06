@@ -60,6 +60,11 @@ public class CommandProcessor : ICommandProcessor
         return commandQueue.Count > 0;
     }
 
+    public int GetListenerCount()
+    {
+        return listeners.Count;
+    }
+
     private static (bool parseSuccess, string listenerName, string listenerCommand, string[] args) ReinterprateCommand(string command)
     {
         var split = command.Split('.', 2);

@@ -75,6 +75,11 @@ public class Session : ISession
         return datas.FindIndex(obj => obj.ID == id) > 0;
     }
 
+    public int GetDataCount()
+    {
+        return datas.Count;
+    }
+
     public bool TryAddData(ObjectData data)
     {
         if (ContainsData(data.ID))

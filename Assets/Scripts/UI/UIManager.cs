@@ -16,7 +16,8 @@ public enum UIScreen
 public enum UIWindow
 {
     Console,
-    Loading
+    Loading,
+    Debug
 }
 
 [RequireComponent(typeof(PlayerInput))]
@@ -26,6 +27,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject console;
     [SerializeField] private GameObject loading;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject debug;
 
     [Inject] private IPauseManager pauseManager;
 
@@ -92,6 +94,9 @@ public class UIManager : Singleton<UIManager>
             case UIWindow.Loading:
                 loading.SetActive(!contains);
                 break;
+            case UIWindow.Debug:
+                debug.SetActive(!contains);
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(window), window, null);
         }
@@ -122,5 +127,11 @@ public class UIManager : Singleton<UIManager>
     {
         if (context.started && GameManager.HasInstance && GameManager.Instance.GameStarted)
             ShowScreen(lastScreen == pauseMenu ? UIScreen.None : UIScreen.Pause);
+    }
+
+    public void ToggleDebug(InputAction.CallbackContext context)
+    {
+        if (context.started && GameManager.HasInstance && GameManager.Instance.GameStarted)
+            ToggleWindow(UIWindow.Debug);
     }
 }

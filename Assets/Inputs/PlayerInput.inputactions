@@ -189,6 +189,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleDebug",
+                    "type": "Button",
+                    "id": "6fbf66a7-37a8-4407-8ce7-38fdebd7580e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -211,6 +220,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TogglePauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4331cb20-ba63-4284-9344-942c1b5be9b6",
+                    "path": "<Keyboard>/f2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleDebug",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
