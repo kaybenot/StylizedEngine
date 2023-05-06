@@ -18,6 +18,7 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private int startScene = 3;
 
     [Inject] private ISceneManager sceneManager;
+    [Inject] private IUIManager uiManager;
     
     private void Start()
     {
@@ -28,10 +29,10 @@ public class MenuUI : MonoBehaviour
 
     private async void OnStartPressed()
     {
-        UIManager.Instance.ToggleWindow(UIWindow.Loading);
-        UIManager.Instance.ReportProgress(0f, "Loading game...");
+        uiManager.ToggleWindow(UIWindow.Loading);
+        uiManager.ReportProgress(0f, "Loading game...");
         
-        var progress = new Progress<float>((val) => UIManager.Instance.ReportProgress(val));
+        var progress = new Progress<float>((val) => uiManager.ReportProgress(val));
         await sceneManager.LoadSceneAdditive(startScene, progress, true, true);
 
         await UniTask.Create(() =>
@@ -40,8 +41,8 @@ public class MenuUI : MonoBehaviour
             return UniTask.CompletedTask;
         });
         
-        UIManager.Instance.ToggleWindow(UIWindow.Loading);
-        UIManager.Instance.HideScreen();
+        uiManager.ToggleWindow(UIWindow.Loading);
+        uiManager.HideScreen();
     }
 
     private void OnSettingsPressed()

@@ -14,6 +14,7 @@ public class Engine : IEngine
     [Inject] private ICommandProcessor processor;
     [Inject] private ISceneManager sceneManager;
     [Inject] private IInputManager inputManager;
+    [Inject] private IUIManager uiManager;
     
     public async UniTask Load()
     {
@@ -29,7 +30,7 @@ public class Engine : IEngine
         // Load Menu
         await sceneManager.LoadSceneAdditive(2, null, true);
         
-        UIManager.Instance.ShowScreen(UIScreen.Menu);
+        uiManager.ShowScreen(UIScreen.Menu);
 
         Loaded = true;
     }
@@ -90,7 +91,7 @@ public class Engine : IEngine
         {
             var log = processor.ProcessCommand();
             if (log != "")
-                UIManager.Instance.LogConsole(log);
+                uiManager.LogConsole(log);
         }
     }
 }

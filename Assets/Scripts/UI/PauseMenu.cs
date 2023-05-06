@@ -12,6 +12,7 @@ public class PauseMenu : MonoBehaviour
 
     [Inject] private IPauseManager pauseManager;
     [Inject] private IEngine engine;
+    [Inject] private IUIManager uiManager;
 
     private void Awake()
     {
@@ -31,17 +32,17 @@ public class PauseMenu : MonoBehaviour
 
     private void Resume()
     {
-        UIManager.Instance.ShowScreen(UIScreen.None);
+        uiManager.ShowScreen(UIScreen.None);
     }
 
     private async void BackToMenu()
     {
-        UIManager.Instance.ToggleWindow(UIWindow.Loading);
-        UIManager.Instance.ReportProgress(0f, "Unloading game");
+        uiManager.ToggleWindow(UIWindow.Loading);
+        uiManager.ReportProgress(0f, "Unloading game");
         await engine.UnloadGame(new Progress<float>((progress) =>
-            UIManager.Instance.ReportProgress(progress)));
+            uiManager.ReportProgress(progress)));
         
-        UIManager.Instance.ToggleWindow(UIWindow.Loading);
-        UIManager.Instance.ShowScreen(UIScreen.Menu);
+        uiManager.ToggleWindow(UIWindow.Loading);
+        uiManager.ShowScreen(UIScreen.Menu);
     }
 }

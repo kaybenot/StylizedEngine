@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -8}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -6}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &44120773
 MonoBehaviour:
@@ -209,8 +209,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -430,8 +430,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -72}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -54}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &134423967
 MonoBehaviour:
@@ -481,8 +481,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1011,8 +1011,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -120}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -90}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &313566891
 MonoBehaviour:
@@ -1062,8 +1062,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2065,8 +2065,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -136}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -102}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &803272829
 MonoBehaviour:
@@ -2116,8 +2116,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2454,8 +2454,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 972990577}
-  - component: {fileID: 972990576}
   - component: {fileID: 972990578}
+  - component: {fileID: 972990579}
   m_Layer: 0
   m_Name: '[Managers]'
   m_TagString: Untagged
@@ -2463,23 +2463,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &972990576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 972990575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58dc26cbf8472cc4286ee08281000088, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menu: {fileID: 1149255128}
-  console: {fileID: 964164590}
-  loading: {fileID: 2082804182}
-  pauseMenu: {fileID: 389341898}
-  debug: {fileID: 303245893}
 --- !u!4 &972990577
 Transform:
   m_ObjectHideFlags: 0
@@ -2533,8 +2516,8 @@ MonoBehaviour:
     m_ActionName: Player/Run[/XInputControllerWindows/buttonWest,/Keyboard/leftShift]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 972990576}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 972990579}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
         m_MethodName: ToggleConsole
         m_Mode: 0
         m_Arguments:
@@ -2553,8 +2536,8 @@ MonoBehaviour:
     m_ActionName: Game/Look[/Keyboard/leftArrow,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 972990576}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 972990579}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
         m_MethodName: TogglePauseMenu
         m_Mode: 0
         m_Arguments:
@@ -2569,8 +2552,8 @@ MonoBehaviour:
     m_ActionName: UI/TogglePauseMenu[/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 972990576}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 972990579}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
         m_MethodName: ToggleDebug
         m_Mode: 0
         m_Arguments:
@@ -2588,6 +2571,23 @@ MonoBehaviour:
   m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &972990579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972990575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c32e259b9d72241abab92cbb9d4a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menu: {fileID: 1149255128}
+  console: {fileID: 964164590}
+  loading: {fileID: 2082804182}
+  pauseMenu: {fileID: 389341898}
+  debug: {fileID: 303245893}
 --- !u!1 &996788182
 GameObject:
   m_ObjectHideFlags: 0
@@ -3093,8 +3093,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -40}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -30}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1136315650
 MonoBehaviour:
@@ -3144,8 +3144,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3472,8 +3472,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -88}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -66}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1583130574
 MonoBehaviour:
@@ -3523,8 +3523,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3701,8 +3701,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -8}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -6}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1670684895
 MonoBehaviour:
@@ -3752,8 +3752,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3913,8 +3913,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -56}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -42}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1676416359
 MonoBehaviour:
@@ -3964,8 +3964,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4335,8 +4335,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -104}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -78}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1991677721
 MonoBehaviour:
@@ -4386,8 +4386,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4761,8 +4761,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -24}
-  m_SizeDelta: {x: 250, y: 16}
+  m_AnchoredPosition: {x: 125, y: -18}
+  m_SizeDelta: {x: 250, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2097743362
 MonoBehaviour:
@@ -4812,8 +4812,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
