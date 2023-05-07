@@ -11,6 +11,8 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 3e994eb42584bdf4aaf13eb66f0a4c57,
     type: 3}
   m_ValidKeywords:
+  - _ADDITIONAL_LIGHTS
+  - _ADDITIONAL_LIGHT_SHADOWS
   - _MAIN_LIGHT_SHADOWS
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -84,6 +86,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ADDITIONAL_LIGHTS: 1
+    - _ADDITIONAL_LIGHT_SHADOWS: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -91,6 +95,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DepthThreshold: 0.005
     - _Depth_Threshold: 0.01
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -104,6 +109,7 @@ Material:
     - _MAIN_LIGHT_SHADOWS: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NormalDotThreshold: 0.98
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
