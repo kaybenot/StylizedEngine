@@ -15,6 +15,7 @@ public class Engine : IEngine
     [Inject] private ISceneManager sceneManager;
     [Inject] private IInputManager inputManager;
     [Inject] private IUIManager uiManager;
+    [Inject] private IPauseManager pauseManager;
     
     public async UniTask Load()
     {
@@ -75,9 +76,12 @@ public class Engine : IEngine
         session.Unload();
         processor.Reset();
         inputManager.Reset();
-        
+
         // Unload Main scene
         await sceneManager.LoadSceneAdditive(2, progress, true, true);
+        
+        uiManager.HideAllWindows();
+        pauseManager.ForceUnpause();
         
         GameLoaded = false;
     }

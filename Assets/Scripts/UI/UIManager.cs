@@ -71,6 +71,15 @@ public class UIManager : IUIManager
         return nextState;
     }
 
+    public void HideAllWindows()
+    {
+        foreach (var (window, windowObj) in windows)
+        {
+            if (windowObj.activeSelf)
+                windowObj.SetActive(false);
+        }
+    }
+
     public void ReportProgress(float val, string text = null)
     {
         loadingComponent.ReportProgress(val, text);

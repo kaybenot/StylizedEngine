@@ -45,6 +45,7 @@ public interface IUIManager
     /// <param name="window">Window to be shown/hidden</param>
     /// <returns>Current state of the window (after toggling)</returns>
     bool ToggleWindow(UIWindow window);
+    void HideAllWindows();
     /// <summary>
     /// Reports progress to progress bar.
     /// </summary>
