@@ -94,6 +94,8 @@ public class Session : ISession
         var obj = Object.Instantiate(data.Prefab, data.Position, data.Rotation, parent).GetComponent<SessionObject>();
         obj.ID = data.ID;
         
+        TryAddData(data);
+        
         if (Initialized)
             obj.OnSessionInitialized();
 

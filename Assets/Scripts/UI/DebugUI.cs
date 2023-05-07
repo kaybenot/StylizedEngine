@@ -29,6 +29,12 @@ public class DebugUI : MonoBehaviour
     private Player player;
     private CameraFollow cam;
 
+    private void Awake()
+    {
+        // Update info once more after pause state has been changed
+        pauseManager.OnPauseChanged += (paused) => UpdateDebugInfo();
+    }
+
     private void OnEnable()
     {
         sessionObjectCount = session.GetAllSessionObjects().Count();

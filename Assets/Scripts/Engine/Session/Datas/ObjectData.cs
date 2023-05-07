@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class ObjectData
 {
-    public SerializableGuid ID;
+    public SerializableGuid ID = Guid.NewGuid();
     public Vector3 Position;
     public Quaternion Rotation;
     public GameObject Prefab;

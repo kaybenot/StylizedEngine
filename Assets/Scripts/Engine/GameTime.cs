@@ -118,5 +118,6 @@ public class GameTime : SessionObject, ICommandListener
             return;
 
         data = new TimeData();
+        session.TryAddData(data);
     }
 }

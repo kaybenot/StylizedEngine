@@ -16,17 +16,20 @@ public class PauseManager : IPauseManager
 
     public void Pause()
     {
-        if (pauseCounter <= 0)
+        pauseCounter++;
+        if (pauseCounter - 1 <= 0)
         {
             Time.timeScale = 0f;
             inputManager.InputBlocked = true;
             OnPauseChanged?.Invoke(true);
         }
-        pauseCounter++;
     }
 
     public void Unpause()
     {
+        if (pauseCounter == 0)
+            return;
+
         pauseCounter--;
         if (pauseCounter > 0)
             return;

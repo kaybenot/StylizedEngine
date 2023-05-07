@@ -39,6 +39,7 @@ public interface ISession
     bool TryAddData(ObjectData data);
     /// <summary>
     /// Spawns object using provided data.
+    /// Automatically adds data to session if has not been added.
     /// </summary>
     /// <param name="data">Data of object to be spawned</param>
     /// <param name="parent">Parent transform of spawned object</param>
