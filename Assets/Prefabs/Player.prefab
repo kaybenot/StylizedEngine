@@ -674,6 +674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ID>k__BackingField:
     Value: 7d319c17-8fdf-4c83-9594-03dad6fad22b
+  prefab: {fileID: 4389910276284617082}
   MoveSpeed: 1.5
   RunSpeed: 6
 --- !u!1 &4696969969596328833

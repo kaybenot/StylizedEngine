@@ -1,22 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Zenject;
 
 public class GameTime : SessionObject, ICommandListener
 {
     [SerializeField] private Light sun;
-
-    [Inject] private ISession session;
+    
     [Inject] private ICommandProcessor cmdProcessor;
+    [Inject] private ISession session;
     
     public string Name => "GameTime";
 
     private TimeData data;
     private float counter = 0f;
 
-    private void Awake()
+    private void Start()
     {
         if (sun == null)
         {
@@ -32,7 +33,12 @@ public class GameTime : SessionObject, ICommandListener
     public override void OnSessionInitialized()
     {
         cmdProcessor.AddListener(this);
-        GetOrCreateData();
+        data = session.GetData<TimeData>(ID);
+    }
+
+    public override ObjectData CreateDefaultData()
+    {
+        return new TimeData(GetPrefab());
     }
 
     private void FixedUpdate()
@@ -109,15 +115,5 @@ public class GameTime : SessionObject, ICommandListener
             default:
                 return "Invalid command.";
         }
-    }
-
-    private void GetOrCreateData()
-    {
-        data = session.GetData<TimeData>(ID);
-        if (data != null)
-            return;
-
-        data = new TimeData();
-        session.TryAddData(data);
     }
 }

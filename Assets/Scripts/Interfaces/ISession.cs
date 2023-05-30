@@ -29,23 +29,19 @@ public interface ISession
     bool Save(string relativeDirectory, string fileName);
     /// <summary>
     /// Initializes session after creating or loading one.
-    /// Should be called after creating all neccessary SessionObjects.
-    /// After initializing, added SessionObjects are going to be called when added.
+    /// Creates objects from data.
+    /// After initializing, added SessionObjects are going to be initialized when added.
     /// </summary>
     void Initialize();
     [CanBeNull] T GetData<T>(Guid id) where T : class;
     bool ContainsData(Guid id);
     int GetDataCount();
-    bool TryAddData(ObjectData data);
     /// <summary>
-    /// Spawns object using provided data.
-    /// Automatically adds data to session if has not been added.
+    /// Adds data to the session.
     /// </summary>
-    /// <param name="data">Data of object to be spawned</param>
-    /// <param name="parent">Parent transform of spawned object</param>
-    /// <returns>Spawned object or null</returns>
-    [CanBeNull] SessionObject TrySpawnObject(ObjectData data, Transform parent = null);
-    IEnumerable<ObjectData> FindNotSpawnedObjects();
+    /// <param name="data">Data to be added</param>
+    /// <returns>Created object from data or null (when data existed)</returns>
+    [CanBeNull] SessionObject TryAddData(ObjectData data);
     IEnumerable<SessionObject> GetAllSessionObjects();
     [CanBeNull] SessionObject GetSessionObject(Guid id);
 }

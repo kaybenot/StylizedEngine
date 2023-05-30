@@ -55,7 +55,11 @@ public class Session : ISession
     public void Initialize()
     {
         foreach (var sessionObject in GetAllSessionObjects())
-            sessionObject.OnSessionInitialized();
+            if (!ContainsData(sessionObject.ID))
+                TryAddData(sessionObject.CreateDefaultData());
+        
+        foreach (var data in datas)
+            CreateObjectFromData(data);
 
         Initialized = true;
         OnInitialized?.Invoke();
@@ -80,26 +84,14 @@ public class Session : ISession
         return datas.Count;
     }
 
-    public bool TryAddData(ObjectData data)
+    public SessionObject TryAddData(ObjectData data)
     {
         if (ContainsData(data.ID))
-            return false;
+            return null;
         
         datas.Add(data);
-        return true;
-    }
 
-    public SessionObject TrySpawnObject(ObjectData data, Transform parent = null)
-    {
-        var obj = Object.Instantiate(data.Prefab, data.Position, data.Rotation, parent).GetComponent<SessionObject>();
-        obj.ID = data.ID;
-        
-        TryAddData(data);
-        
-        if (Initialized)
-            obj.OnSessionInitialized();
-
-        return obj;
+        return CreateObjectFromData(data);
     }
 
     public IEnumerable<ObjectData> FindNotSpawnedObjects()
@@ -125,5 +117,15 @@ public class Session : ISession
                 return null;
         }
         return sessionObjectsCache[cacheIndex];
+    }
+
+    private SessionObject CreateObjectFromData(ObjectData data)
+    {
+        var obj = Object.Instantiate(data.Prefab, data.Position, data.Rotation, data.Parent).GetComponent<SessionObject>();
+        obj.ID = data.ID;
+        
+        obj.OnSessionInitialized();
+
+        return obj;
     }
 }

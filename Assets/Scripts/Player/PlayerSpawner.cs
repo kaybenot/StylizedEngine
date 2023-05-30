@@ -25,9 +25,8 @@ public class PlayerSpawner : MonoBehaviour, ISpawner
     /// </summary>
     public void Spawn()
     {
-        session.TrySpawnObject(new ObjectData()
+        session.TryAddData(new ObjectData(playerPrefab)
         {
-            Prefab = playerPrefab,
             Position = transform.position,
             Rotation = Quaternion.identity
         });

@@ -6,6 +6,9 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
+/// <summary>
+/// This class takes care of all engine flow.
+/// </summary>
 public class Platform : Singleton<Platform>
 {
     /// <summary>
@@ -13,7 +16,6 @@ public class Platform : Singleton<Platform>
     /// This field is public because it is a workaround for EditorWindow.
     /// </summary>
     [Inject] public ISession Session;
-    [Inject] private ISceneManager sceneManager;
     [Inject] private IEngine engine;
 
     private async void Start()

@@ -28,7 +28,7 @@ public class Player : SessionObject, IMovable
     private Vector3 lastMoveDirection;
     private bool running = false;
 
-    private void Awake()
+    private void Start()
     {
         animator = GetComponent<Animator>();
     }
