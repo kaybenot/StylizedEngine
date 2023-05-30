@@ -5,8 +5,6 @@ using UnityEditor;
 using UnityEngine;
 using Zenject;
 
-public class SessionObjectManagersHack : MonoBehaviour
-
 /// <summary>
 /// Class defining objects bound with session.
 /// The objects must be prefabs!
