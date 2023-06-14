@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.TerrainTools;
 using UnityEngine;
 
 [CustomEditor(typeof(WorldEditor), true)]
@@ -56,7 +57,7 @@ public class WorldEditorEditor : Editor
         chunkHeight = EditorGUILayout.FloatField("Chunk Height", chunkHeight);
         chunkNumX = EditorGUILayout.IntField("Chunk Count X", chunkNumX);
         chunkNumZ = EditorGUILayout.IntField("Chunk Count Z", chunkNumZ);
-        
+
         if (GUILayout.Button("Create the world"))
             CreateWorld();
     }
@@ -148,6 +149,11 @@ public class WorldEditorEditor : Editor
         AssetDatabase.CreateFolder("Assets/Resources/Worlds", worldName);
         AssetDatabase.CreateFolder($"Assets/Resources/Worlds/{worldName}", "TerrainDatas");
 
+        // Terrain resources
+        var terrainMaterial = Resources.Load<Material>("Terrain Material");
+        var grassLayer = Resources.Load<TerrainLayer>("TerrainLayers/Grass");
+        var pathLayer = Resources.Load<TerrainLayer>("TerrainLayers/Path");
+
         // Create terrains
         for (var x = 0; x < chunkNumX; x++)
         for (var z = 0; z < chunkNumZ; z++)
@@ -155,14 +161,25 @@ public class WorldEditorEditor : Editor
             var td = new TerrainData
             {
                 name = $"Terrain_({x}, {z})",
-                size = new Vector3(chunkWidth, chunkHeight, chunkWidth)
+                size = new Vector3(chunkWidth, chunkHeight, chunkWidth),
+                terrainLayers = new TerrainLayer[2]
             };
             
+            // Add terrain layers
+            td.terrainLayers[0] = grassLayer;
+            td.terrainLayers[1] = pathLayer;
+
             var terrainGO = Terrain.CreateTerrainGameObject(td);
             var chunkScript = terrainGO.AddComponent<Chunk>();
             terrainGO.transform.parent = terrainContainer.transform;
             terrainGO.transform.position = new Vector3(x * chunkWidth, 0f, z * chunkWidth);
             terrainGO.name = td.name;
+
+            if (terrainMaterial != null)
+            {
+                var terrain = terrainGO.GetComponent<Terrain>();
+                terrain.materialTemplate = terrainMaterial;
+            }
             
             AssetDatabase.CreateAsset(td, $"Assets/Resources/Worlds/{worldName}/TerrainDatas/{td.name}.asset");
         }

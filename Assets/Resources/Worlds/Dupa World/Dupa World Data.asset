@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370729e85f1b24f41ad336ce9e2c1db5, type: 3}
-  m_Name: World Container
+  m_Script: {fileID: 11500000, guid: 0e1211118c3c00f4ba8d9ef73e76a7b6, type: 3}
+  m_Name: Dupa World Data
   m_EditorClassIdentifier: 
-  Worlds:
-  - {fileID: 11400000, guid: 37fdcb2e2a0dbb64db0f8926cdd87cee, type: 2}
+  Name: Dupa World
+  ChunkWidth: 20
+  ChunkHeight: 50
+  ChunkCountX: 10
+  ChunkCountZ: 10
+  Prefab: {fileID: 2783643613373437079, guid: 8f5f0b3d7bd18114c940805cc58f41e7, type: 3}

@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370729e85f1b24f41ad336ce9e2c1db5, type: 3}
-  m_Name: World Container
+  m_Script: {fileID: 11500000, guid: c509dbaa7b6f416409e3195321a2187e, type: 3}
+  m_Name: Terrain Layers
   m_EditorClassIdentifier: 
-  Worlds:
-  - {fileID: 11400000, guid: 37fdcb2e2a0dbb64db0f8926cdd87cee, type: 2}
+  PaletteLayers:
+  - {fileID: 8574412962073106934, guid: 14847a1c8b1feaa45be37a7551a61ceb, type: 2}
+  - {fileID: 8574412962073106934, guid: 21052510e3e568d4db471a5b43d006c7, type: 2}
