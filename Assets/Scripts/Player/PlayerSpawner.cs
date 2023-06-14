@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class PlayerSpawner : MonoBehaviour, ISpawner
+public class PlayerSpawner : ZenAutoInjecter, ISpawner
 {
     [SerializeField] private GameObject playerPrefab;
 

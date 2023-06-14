@@ -19,6 +19,8 @@ public class Player : SessionObject, IMovable
             UpdateMove();
         }
     }
+
+    public Vector3Int PositionInt => Vector3Int.FloorToInt(transform.position);
     
     private static readonly int speedX = Animator.StringToHash("speedX");
     private static readonly int speedY = Animator.StringToHash("speedY");

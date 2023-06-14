@@ -26,7 +26,12 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        
-        onGameReady += () => readyCalled = true;
+
+        onGameReady += OnGameReadyFunction;
+    }
+
+    private void OnGameReadyFunction()
+    {
+        readyCalled = true;
     }
 }

@@ -15,5 +15,6 @@ public class MainInstaller : MonoInstaller
         Container.Bind<IPauseManager>().To<PauseManager>().AsSingle();
         Container.Bind<IEngine>().To<Engine>().AsSingle();
         Container.Bind<IUIManager>().To<UIManager>().AsSingle();
+        Container.Bind<IWorldManager>().To<WorldManager>().AsSingle();
     }
 }

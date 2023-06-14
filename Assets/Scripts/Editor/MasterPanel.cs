@@ -52,6 +52,8 @@ public class MasterPanel : EditorWindow
             selectedScene = EditorGUILayout.Popup("Choose scene", selectedScene, GetSceneNames().ToArray());
             if (GUILayout.Button("Load"))
                 EditorSceneManager.OpenScene(SceneUtility.GetScenePathByBuildIndex(selectedScene));
+            if (GUILayout.Button("World Editor"))
+                EditorSceneManager.OpenScene(SceneUtility.GetScenePathByBuildIndex(4));
         }
         
         GUILayout.Space(20);

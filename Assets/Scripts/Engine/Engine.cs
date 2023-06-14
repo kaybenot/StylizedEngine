@@ -16,6 +16,7 @@ public class Engine : IEngine
     [Inject] private IInputManager inputManager;
     [Inject] private IUIManager uiManager;
     [Inject] private IPauseManager pauseManager;
+    [Inject] private IWorldManager worldManager;
     
     public async UniTask Load()
     {
@@ -65,8 +66,15 @@ public class Engine : IEngine
         }
         
         session.New();
+
+        var worldDatas = worldManager.ListWorlds();
+        if (worldDatas.Count > 0)
+        {
+            var world = new World(worldDatas[0]);
+        }
+
         session.Initialize();
-        
+
         GameLoaded = true;
         return UniTask.CompletedTask;
     }

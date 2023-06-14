@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17712025, g: 0.22172855, b: 0.30398893, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -669,6 +669,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: '[GameTime]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2618844326906499569, guid: 8faa840d8478a154db8b6e740b779423,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8faa840d8478a154db8b6e740b779423, type: 3}
@@ -2686,7 +2691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &784390668
 Transform:
   m_ObjectHideFlags: 0
@@ -3009,6 +3014,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7909cff9-15d6-4614-9813-08bb55148767
     m_ActionName: Game/Look[/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3ade18db-f9b3-455b-9deb-052e7b018dbc
+    m_ActionName: UI/TogglePauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6fbf66a7-37a8-4407-8ce7-38fdebd7580e
+    m_ActionName: UI/ToggleDebug[/Keyboard/f3]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Game
@@ -4048,7 +4061,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1455862078
 Transform:
   m_ObjectHideFlags: 0

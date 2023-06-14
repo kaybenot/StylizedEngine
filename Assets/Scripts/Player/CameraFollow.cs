@@ -36,7 +36,10 @@ public class CameraFollow : MonoBehaviour
     {
         // Teleport camera to player spawner position
         fixedCameraPositionY = transform.position.y;
-        TeleportCamera(FindObjectOfType<PlayerSpawner>().transform.position);
+
+        var scenePlayer = FindObjectOfType<PlayerSpawner>();
+        if (scenePlayer != null)
+            TeleportCamera(scenePlayer.transform.position);
     }
 
     private void Update()
