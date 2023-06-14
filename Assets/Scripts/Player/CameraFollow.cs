@@ -17,10 +17,10 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnGameReady += OnGameReady;
+        GameManager.Instance.OnPlayerSpawn += OnPlayerSpawn;
     }
 
-    private void OnGameReady()
+    private void OnPlayerSpawn()
     {
         player = FindObjectOfType<Player>();
         followTransform = player.transform;

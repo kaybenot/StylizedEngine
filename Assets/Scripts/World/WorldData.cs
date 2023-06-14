@@ -6,6 +6,10 @@ using UnityEngine;
 public class WorldData : ScriptableObject
 {
     [Header("World object settings")]
-    public GameObject worldPrefab;
-    public string Name = "World";
+    public string Name = "New World";
+    public float ChunkWidth = 20f;
+    public float ChunkHeight = 50f;
+    public int ChunkCountX = 10;
+    public int ChunkCountZ = 10;
+    public GameObject Prefab;
 }

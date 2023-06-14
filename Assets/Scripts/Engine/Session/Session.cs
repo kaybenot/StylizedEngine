@@ -24,6 +24,8 @@ public class Session : ISession
     {
         ID = Guid.NewGuid();
         datas = new List<ObjectData>();
+        
+        Initialize();
     }
 
     public bool Load(string directory, string fileName)
@@ -34,6 +36,8 @@ public class Session : ISession
 
         ID = loadedSession.ID;
         datas = loadedSession.datas;
+        
+        Initialize();
 
         return true;
     }

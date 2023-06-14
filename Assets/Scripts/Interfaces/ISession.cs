@@ -27,12 +27,6 @@ public interface ISession
     /// <param name="fileName">File name to be saved</param>
     /// <returns>True if loaded successfully</returns>
     bool Save(string relativeDirectory, string fileName);
-    /// <summary>
-    /// Initializes session after creating or loading one.
-    /// Creates objects from data.
-    /// After initializing, added SessionObjects are going to be initialized when added.
-    /// </summary>
-    void Initialize();
     [CanBeNull] T GetData<T>(Guid id) where T : class;
     bool ContainsData(Guid id);
     int GetDataCount();

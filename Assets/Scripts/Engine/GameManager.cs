@@ -18,10 +18,25 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public Action OnPlayerSpawn
+    {
+        get => onPlayerSpawn;
+        set
+        {
+            if (playerSpawned)
+                value?.Invoke();
+            else
+                onPlayerSpawn += value;
+        }
+    }
+
     public bool GameStarted => readyCalled;
+    public bool PlayerSpawned => playerSpawned;
 
     private Action onGameReady;
+    private Action onPlayerSpawn;
     private bool readyCalled = false;
+    private bool playerSpawned;
 
     protected override void Awake()
     {

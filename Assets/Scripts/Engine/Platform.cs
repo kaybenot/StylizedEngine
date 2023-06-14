@@ -31,6 +31,5 @@ public class Platform : Singleton<Platform>
     public async void StartGame()
     {
         await engine.LoadGame();
-        GameManager.Instance.OnGameReady?.Invoke();
     }
 }

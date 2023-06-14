@@ -10,7 +10,7 @@ using Zenject;
 /// The objects must be prefabs!
 /// Objects can be created from data, or create data on their own when placed on scene.
 /// </summary>
-public class SessionObject : ZenAutoInjecter
+public class SessionObject : MonoBehaviour
 {
     [field: SerializeField] public SerializableGuid ID { get; set; }
     [SerializeField] private GameObject prefab;

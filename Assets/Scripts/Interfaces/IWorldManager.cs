@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface IWorldManager
 {
-    List<WorldData> ListWorlds();
+    WorldContainer GetWorldDataContainer();
+    void LoadWorld(WorldData worldData, Transform parent = null);
+    void UnloadWorld();
 }

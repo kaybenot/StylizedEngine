@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class PlayerSpawner : ZenAutoInjecter, ISpawner
+public class PlayerSpawner : StaticWorldObject, ISpawner
 {
     [SerializeField] private GameObject playerPrefab;
 
@@ -12,7 +12,7 @@ public class PlayerSpawner : ZenAutoInjecter, ISpawner
 
     private void Start()
     {
-        session.OnInitialized += Spawn;
+        Spawn();
     }
 
     private void OnDrawGizmos()
@@ -30,5 +30,7 @@ public class PlayerSpawner : ZenAutoInjecter, ISpawner
             Position = transform.position,
             Rotation = Quaternion.identity
         });
+        
+        GameManager.Instance.OnPlayerSpawn?.Invoke();
     }
 }

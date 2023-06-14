@@ -9,8 +9,7 @@ public class Engine : IEngine
 {
     public bool Loaded { get; private set; }
     public bool GameLoaded { get; private set; }
-
-    [Inject] private ISession session;
+    
     [Inject] private ICommandProcessor processor;
     [Inject] private ISceneManager sceneManager;
     [Inject] private IInputManager inputManager;
@@ -64,26 +63,22 @@ public class Engine : IEngine
             Debug.LogError("Tried to load Game when it has been already loaded and was not unloaded!");
             return UniTask.CompletedTask;
         }
-        
-        session.New();
 
-        var worldDatas = worldManager.ListWorlds();
-        if (worldDatas.Count > 0)
-        {
-            var world = new World(worldDatas[0]);
-        }
+        var worldContainer = worldManager.GetWorldDataContainer();
+        if (worldContainer.Worlds.Count > 0 && worldContainer.Worlds[0] != null)
+            worldManager.LoadWorld(worldContainer.Worlds[0]);
 
-        session.Initialize();
-
+        GameManager.Instance.OnGameReady?.Invoke();
         GameLoaded = true;
         return UniTask.CompletedTask;
     }
 
     public async UniTask UnloadGame(IProgress<float> progress)
     {
-        session.Unload();
         processor.Reset();
         inputManager.Reset();
+        
+        worldManager.UnloadWorld();
 
         // Unload Main scene
         await sceneManager.LoadSceneAdditive(2, progress, true, true);

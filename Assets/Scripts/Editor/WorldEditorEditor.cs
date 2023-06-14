@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -81,6 +82,10 @@ public class WorldEditorEditor : Editor
 
     private void DeleteWorld(string worldNameToDelete)
     {
+        var worldContainer = GetOrCreateWorldContainer();
+        foreach (var worldData in worldContainer.Worlds.Where(w => w.Name == worldNameToDelete))
+            worldContainer.Worlds.Remove(worldData);
+
         AssetDatabase.DeleteAsset($"Assets/Resources/Worlds/{worldNameToDelete}");
         AssetDatabase.Refresh();
         AssetDatabase.SaveAssets();
@@ -94,6 +99,18 @@ public class WorldEditorEditor : Editor
                 DestroyImmediate(worldEditor.transform.GetChild(i - 1).gameObject);
     }
 
+    private WorldContainer GetOrCreateWorldContainer()
+    {
+        var worldContainer = Resources.Load<WorldContainer>("Worlds/World Container");
+        if (worldContainer == null)
+        {
+            worldContainer = CreateInstance<WorldContainer>();
+            AssetDatabase.CreateAsset(worldContainer, "Assets/Resources/Worlds/World Container.asset");
+        }
+
+        return worldContainer;
+    }
+
     private void CreateWorld()
     {
         if (worldEditor == null)
@@ -104,7 +121,17 @@ public class WorldEditorEditor : Editor
         // Create world object
         var worldGO = new GameObject(worldName);
         worldGO.transform.parent = worldEditor.transform;
+        var worldScript = worldGO.AddComponent<World>();
         
+        // Create world scriptable asset
+        var worldScriptable = CreateInstance<WorldData>();
+        worldScript.Data = worldScriptable;
+        worldScriptable.Name = worldName;
+        worldScriptable.ChunkWidth = chunkWidth;
+        worldScriptable.ChunkHeight = chunkHeight;
+        worldScriptable.ChunkCountX = chunkNumX;
+        worldScriptable.ChunkCountZ = chunkNumZ;
+
         // Create terrain container
         var terrainContainer = new GameObject("Terrain Container");
         terrainContainer.transform.parent = worldGO.transform;
@@ -132,6 +159,7 @@ public class WorldEditorEditor : Editor
             };
             
             var terrainGO = Terrain.CreateTerrainGameObject(td);
+            var chunkScript = terrainGO.AddComponent<Chunk>();
             terrainGO.transform.parent = terrainContainer.transform;
             terrainGO.transform.position = new Vector3(x * chunkWidth, 0f, z * chunkWidth);
             terrainGO.name = td.name;
@@ -139,7 +167,16 @@ public class WorldEditorEditor : Editor
             AssetDatabase.CreateAsset(td, $"Assets/Resources/Worlds/{worldName}/TerrainDatas/{td.name}.asset");
         }
 
-        PrefabUtility.SaveAsPrefabAssetAndConnect(worldGO, $"Assets/Resources/Worlds/{worldName}/{worldName}.prefab", InteractionMode.UserAction);
+        worldScriptable.Prefab = PrefabUtility.SaveAsPrefabAssetAndConnect(worldGO,
+            $"Assets/Resources/Worlds/{worldName}/{worldName}.prefab", InteractionMode.UserAction);
+        AssetDatabase.CreateAsset(worldScriptable, $"Assets/Resources/Worlds/{worldName}/{worldName} Data.asset");
+        worldScriptable.Prefab = PrefabUtility.SaveAsPrefabAssetAndConnect(worldGO,
+            $"Assets/Resources/Worlds/{worldName}/{worldName}.prefab", InteractionMode.UserAction);
+        
+        var worldContainer = GetOrCreateWorldContainer();
+        worldContainer.Worlds.Add(worldScriptable);
+        EditorUtility.SetDirty(worldContainer);
+        
         AssetDatabase.Refresh();
         AssetDatabase.SaveAssets();
     }
