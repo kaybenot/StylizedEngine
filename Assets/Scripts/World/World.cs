@@ -46,17 +46,21 @@ public class World : MonoBehaviour
 
     private void HandleChunkDrawing()
     {
-        var currentChunk = GetChunkOnPoint(player.transform.position.x, player.transform.position.z);
-        
-        // TODO: Proper chunk unloading
+        var currentChunkPos = GetChunkPosition(player.transform.position.x, player.transform.position.z);
+
         foreach (var chunk in loadedChunks)
             chunk.SetActive(false);
         loadedChunks.Clear();
 
-        if (!loadedChunks.Contains(currentChunk))
+        for (var x = currentChunkPos.x - Settings.Instance.GameplaySettings.RenderDistance * Data.ChunkWidth; x < currentChunkPos.x + Settings.Instance.GameplaySettings.RenderDistance * Data.ChunkWidth; x += Data.ChunkWidth)
+        for (var z = currentChunkPos.z - Settings.Instance.GameplaySettings.RenderDistance * Data.ChunkWidth; z < currentChunkPos.z + Settings.Instance.GameplaySettings.RenderDistance * Data.ChunkWidth; z += Data.ChunkWidth)
         {
-            currentChunk.SetActive(true);
-            loadedChunks.Add(currentChunk);
+            if (!chunks.ContainsKey((x, z)))
+                continue;
+
+            var chunk = chunks[(x, z)];
+            chunk.SetActive(true);
+            loadedChunks.Add(chunk);
         }
     }
     
