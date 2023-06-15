@@ -148,6 +148,15 @@ public class WorldEditorEditor : Editor
         // Create terrain resource folders
         AssetDatabase.CreateFolder("Assets/Resources/Worlds", worldName);
         AssetDatabase.CreateFolder($"Assets/Resources/Worlds/{worldName}", "TerrainDatas");
+        
+        // Add world's default static objects
+        var playerSpawner = Resources.Load<GameObject>("World Components/[PlayerSpawner]");
+        var spawnerGO = Instantiate(playerSpawner, staticObjectContainer.transform);
+        spawnerGO.transform.position = new Vector3(1f, 1.5f, 1f);
+        
+        // Add world's default session objects
+        var gameTime = Resources.Load<GameObject>("World Components/[GameTime]");
+        Instantiate(gameTime, sessionObjectContainer.transform);
 
         // Terrain resources
         var terrainMaterial = Resources.Load<Material>("Terrain Material");
@@ -171,6 +180,7 @@ public class WorldEditorEditor : Editor
 
             var terrainGO = Terrain.CreateTerrainGameObject(td);
             var chunkScript = terrainGO.AddComponent<Chunk>();
+            chunkScript.Initialize(new Vector2(chunkWidth * x, chunkWidth * z), chunkWidth);
             terrainGO.transform.parent = terrainContainer.transform;
             terrainGO.transform.position = new Vector3(x * chunkWidth, 0f, z * chunkWidth);
             terrainGO.name = td.name;

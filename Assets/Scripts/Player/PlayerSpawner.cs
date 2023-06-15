@@ -32,5 +32,6 @@ public class PlayerSpawner : StaticWorldObject, ISpawner
         });
         
         GameManager.Instance.OnPlayerSpawn?.Invoke();
+        GameManager.Instance.OnPlayerSpawn = null;
     }
 }
