@@ -178,19 +178,25 @@ public class WorldEditorEditor : Editor
             td.terrainLayers[0] = grassLayer;
             td.terrainLayers[1] = pathLayer;
 
+            // Create terrain chunk
             var terrainGO = Terrain.CreateTerrainGameObject(td);
             var chunkScript = terrainGO.AddComponent<Chunk>();
             chunkScript.Initialize(new Vector2(chunkWidth * x, chunkWidth * z), chunkWidth);
             terrainGO.transform.parent = terrainContainer.transform;
             terrainGO.transform.position = new Vector3(x * chunkWidth, 0f, z * chunkWidth);
             terrainGO.name = td.name;
+            var terrain = terrainGO.GetComponent<Terrain>();
 
+            // Add grass spawner to chunk
+            var grassSpawnerGO = new GameObject("[Grass Spawner]");
+            grassSpawnerGO.transform.parent = terrainGO.transform;
+            var grassSpawner = grassSpawnerGO.AddComponent<GrassSpawner>();
+            grassSpawner.Terrain = terrain;
+
+            // Assign terrain material
             if (terrainMaterial != null)
-            {
-                var terrain = terrainGO.GetComponent<Terrain>();
                 terrain.materialTemplate = terrainMaterial;
-            }
-            
+
             AssetDatabase.CreateAsset(td, $"Assets/Resources/Worlds/{worldName}/TerrainDatas/{td.name}.asset");
         }
 

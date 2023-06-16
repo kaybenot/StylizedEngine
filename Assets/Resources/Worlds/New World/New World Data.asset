@@ -17,4 +17,4 @@ MonoBehaviour:
   ChunkHeight: 50
   ChunkCountX: 10
   ChunkCountZ: 10
-  Prefab: {fileID: 7459708864960656588, guid: 3bc4d504361937847b317baec9581750, type: 3}
+  Prefab: {fileID: 49994036242382819, guid: 3bc4d504361937847b317baec9581750, type: 3}
