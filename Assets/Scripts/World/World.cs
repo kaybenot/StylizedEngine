@@ -3,63 +3,73 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class World : MonoBehaviour
+public class World : MonoBehaviour, IWorld
 {
-    public WorldData Data;
+    [field: SerializeField] public WorldData WorldData { get; set; }
 
-    private Dictionary<(float x, float z), Chunk> chunks;
-    private List<Chunk> loadedChunks;
+    private Dictionary<(float x, float z), IChunk> chunks;
+    private List<IChunk> loadedChunks;
     private Player player;
     
     private void Awake()
     {
-        chunks = new Dictionary<(float x, float z), Chunk>();
-        loadedChunks = new List<Chunk>();
-        
-        GameManager.Instance.OnPlayerSpawn += OnPlayerSpawn;
-
-        // Register chunks
-        foreach (var chunk in GetComponentsInChildren<Chunk>())
-        {
-            chunks.Add((chunk.Position.x, chunk.Position.y), chunk);
-            chunk.SetActive(false);
-        }
+        Initialize();
     }
 
     private void FixedUpdate()
     {
         HandleChunkDrawing();
     }
-    
-    /// <summary>
-    /// Gets chunk position from world point.
-    /// </summary>
-    public (float x, float z) GetChunkPosition(float x, float z)
+
+    public void Initialize()
     {
-        return (Mathf.Floor(x / Data.ChunkWidth) * Data.ChunkWidth, Mathf.Floor(z / Data.ChunkWidth) * Data.ChunkWidth);
+        chunks = new Dictionary<(float x, float z), IChunk>();
+        loadedChunks = new List<IChunk>();
+        
+        GameManager.Instance.OnPlayerSpawn += OnPlayerSpawn;
+
+        // Register chunks
+        foreach (var chunk in GetComponentsInChildren<IChunk>())
+        {
+            chunks.Add((chunk.Position.x, chunk.Position.y), chunk);
+            chunk.Initialize();
+            chunk.Deactivate();
+        }
+    }
+    
+    public void Free()
+    {
+        // Is it really needed?
     }
 
-    public Chunk GetChunkOnPoint(float x, float z)
+    public IChunk GetChunkAtPosition(float x, float z)
     {
-        return chunks[GetChunkPosition(x, z)];
+        return chunks[GetChunkCoordinates(x, z)];
+    }
+
+    public (float x, float z) GetChunkCoordinates(float x, float z)
+    {
+        return (Mathf.Floor(x / WorldData.ChunkWidth) * WorldData.ChunkWidth, Mathf.Floor(z / WorldData.ChunkWidth) * WorldData.ChunkWidth);
     }
 
     private void HandleChunkDrawing()
     {
-        var currentChunkPos = GetChunkPosition(player.transform.position.x, player.transform.position.z);
+        var currentChunkPos = GetChunkCoordinates(player.transform.position.x, player.transform.position.z);
 
         foreach (var chunk in loadedChunks)
-            chunk.SetActive(false);
+            chunk.Deactivate();
         loadedChunks.Clear();
 
-        for (var x = currentChunkPos.x - Settings.Instance.GameplaySettings.RenderDistance * Data.ChunkWidth; x < currentChunkPos.x + Settings.Instance.GameplaySettings.RenderDistance * Data.ChunkWidth; x += Data.ChunkWidth)
-        for (var z = currentChunkPos.z - Settings.Instance.GameplaySettings.RenderDistance * Data.ChunkWidth; z < currentChunkPos.z + Settings.Instance.GameplaySettings.RenderDistance * Data.ChunkWidth; z += Data.ChunkWidth)
+        for (var x = currentChunkPos.x - Settings.Instance.GameplaySettings.RenderDistance * WorldData.ChunkWidth;
+             x < currentChunkPos.x + Settings.Instance.GameplaySettings.RenderDistance * WorldData.ChunkWidth; x += WorldData.ChunkWidth)
+        for (var z = currentChunkPos.z - Settings.Instance.GameplaySettings.RenderDistance * WorldData.ChunkWidth;
+             z < currentChunkPos.z + Settings.Instance.GameplaySettings.RenderDistance * WorldData.ChunkWidth; z += WorldData.ChunkWidth)
         {
             if (!chunks.ContainsKey((x, z)))
                 continue;
 
             var chunk = chunks[(x, z)];
-            chunk.SetActive(true);
+            chunk.Activate();
             loadedChunks.Add(chunk);
         }
     }

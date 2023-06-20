@@ -6,9 +6,10 @@ using UnityEngine.Rendering;
 
 /// <summary>
 /// Sad grass spawner, does not use MaterialPropertyBlock because shader graphs, thus does not render grass properly
-/// on curved terrain
+/// on curved terrain.
+/// TODO: Improve component, badly written
 /// </summary>
-public class GrassSpawner : MonoBehaviour, ISpawner
+public class GrassSpawner : MonoBehaviour, IChunkComponent
 {
     [field: SerializeField] public Terrain Terrain { get; set; }
     
@@ -18,25 +19,35 @@ public class GrassSpawner : MonoBehaviour, ISpawner
     [SerializeField] private float width = 0.6f;
     [SerializeField] private float height = 0.6f;
 
-    private Material grassMaterial;
-    private Texture2D noiseTexture;
+    private static Material grassMaterial;
     private List<List<Matrix4x4>> matrices;
-    private Mesh mesh;
-
-    private void Awake()
-    {
-        grassMaterial = Resources.Load<Material>("Grass Material");
-        noiseTexture = Resources.Load<Texture2D>("Grass Noise");
-    }
+    private static Mesh mesh;
 
     private void Update()
     {
         RenderGrass();
     }
     
+    public void Initialize()
+    {
+        Spawn();
+    }
+
+    public void ChunkLoaded()
+    {
+    }
+
+    public void ChunkUnloaded()
+    {
+    }
+    
     public void Spawn()
     {
-        CreateGrassMesh();
+        if (grassMaterial == null)
+            grassMaterial = Resources.Load<Material>("Grass Material");
+        
+        if (mesh == null)
+            CreateGrassMesh();
         
         var terrainSize = Terrain.terrainData.size;
         var terrainPos = Terrain.GetPosition();
@@ -47,6 +58,8 @@ public class GrassSpawner : MonoBehaviour, ISpawner
         var objectNumber = 0;
         var instanceGroup = 0;
         matrices.Add(new List<Matrix4x4>());
+        
+        var noiseTexture = Resources.Load<Texture2D>("Grass Noise");
 
         var samplesPerUnitX = noiseTexture.width * density / 4f;
         var samplesPerUnitZ = noiseTexture.height * density / 4f;
@@ -61,10 +74,10 @@ public class GrassSpawner : MonoBehaviour, ISpawner
                 objectNumber = 0;
             }
             
-            if(!IsOnNoiseHighValue(x, z))
+            if(!IsOnNoiseHighValue(x, z, noiseTexture))
                 continue;
 
-            var grassPos = CalculateGrassPosition(terrainPos, x, z);
+            var grassPos = CalculateGrassPosition(terrainPos, x, z, noiseTexture);
             var TRS = CalculateTRS(grassPos);
             
             if (!IsOnGrassTexture(grassPos))
@@ -143,7 +156,7 @@ public class GrassSpawner : MonoBehaviour, ISpawner
         return !(alphaMap[0] <= 0.5f);
     }
 
-    private Vector3 CalculateGrassPosition(Vector3 terrainPos, int x, int z)
+    private Vector3 CalculateGrassPosition(Vector3 terrainPos, int x, int z, Texture2D noiseTexture)
     {
         var grassPos = new Vector3(terrainPos.x + x * (4f / (noiseTexture.width * density)), 0f,
             terrainPos.z + z * (4f / (noiseTexture.height * density)));
@@ -160,7 +173,7 @@ public class GrassSpawner : MonoBehaviour, ISpawner
         return Matrix4x4.TRS(grassPos, rotation, scale);
     }
 
-    private bool IsOnNoiseHighValue(int pixelX, int pixelY)
+    private bool IsOnNoiseHighValue(int pixelX, int pixelY, Texture2D noiseTexture)
     {
         return noiseTexture.GetPixel(pixelX % noiseTexture.width, pixelY % noiseTexture.height) == Color.black;
     }

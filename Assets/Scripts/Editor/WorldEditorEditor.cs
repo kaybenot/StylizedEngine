@@ -126,7 +126,7 @@ public class WorldEditorEditor : Editor
         
         // Create world scriptable asset
         var worldScriptable = CreateInstance<WorldData>();
-        worldScript.Data = worldScriptable;
+        worldScript.WorldData = worldScriptable;
         worldScriptable.Name = worldName;
         worldScriptable.ChunkWidth = chunkWidth;
         worldScriptable.ChunkHeight = chunkHeight;
@@ -181,7 +181,7 @@ public class WorldEditorEditor : Editor
             // Create terrain chunk
             var terrainGO = Terrain.CreateTerrainGameObject(td);
             var chunkScript = terrainGO.AddComponent<Chunk>();
-            chunkScript.Initialize(new Vector2(chunkWidth * x, chunkWidth * z), chunkWidth);
+            chunkScript.Create(new Vector2(chunkWidth * x, chunkWidth * z), chunkWidth);
             terrainGO.transform.parent = terrainContainer.transform;
             terrainGO.transform.position = new Vector3(x * chunkWidth, 0f, z * chunkWidth);
             terrainGO.name = td.name;
