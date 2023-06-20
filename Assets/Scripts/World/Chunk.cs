@@ -15,7 +15,7 @@ public class Chunk : MonoBehaviour, IChunk
         AddChildChunkComponents();
 
         foreach (var component in ChunkComponents)
-            component.Initialize();
+            component.Initialize(this);
     }
     
     public void Create(Vector2 position, float width)

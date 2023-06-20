@@ -123,6 +123,7 @@ public class WorldEditorEditor : Editor
         var worldGO = new GameObject(worldName);
         worldGO.transform.parent = worldEditor.transform;
         var worldScript = worldGO.AddComponent<World>();
+        var chunkRenderer = worldGO.AddComponent<ChunkRenderer>();
         
         // Create world scriptable asset
         var worldScriptable = CreateInstance<WorldData>();

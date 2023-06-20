@@ -6,35 +6,24 @@ using UnityEngine;
 public class World : MonoBehaviour, IWorld
 {
     [field: SerializeField] public WorldData WorldData { get; set; }
+    public List<IWorldComponent> WorldComponents { get; private set; } = new ();
 
     private Dictionary<(float x, float z), IChunk> chunks;
-    private List<IChunk> loadedChunks;
-    private Player player;
-    
+
     private void Awake()
     {
         Initialize();
     }
 
-    private void FixedUpdate()
-    {
-        HandleChunkDrawing();
-    }
-
     public void Initialize()
     {
         chunks = new Dictionary<(float x, float z), IChunk>();
-        loadedChunks = new List<IChunk>();
-        
-        GameManager.Instance.OnPlayerSpawn += OnPlayerSpawn;
 
-        // Register chunks
-        foreach (var chunk in GetComponentsInChildren<IChunk>())
-        {
-            chunks.Add((chunk.Position.x, chunk.Position.y), chunk);
-            chunk.Initialize();
-            chunk.Deactivate();
-        }
+        AddChildWorldComponents();
+        RegisterChunks();
+
+        foreach (var component in WorldComponents)
+            component.Initialize(this);
     }
     
     public void Free()
@@ -42,9 +31,20 @@ public class World : MonoBehaviour, IWorld
         // Is it really needed?
     }
 
+    public void RegisterComponent(IWorldComponent component)
+    {
+        WorldComponents.Add(component);
+    }
+
+    public void UnregisterComponent(IWorldComponent component)
+    {
+        if (WorldComponents.Contains(component))
+            WorldComponents.Remove(component);
+    }
+
     public IChunk GetChunkAtPosition(float x, float z)
     {
-        return chunks[GetChunkCoordinates(x, z)];
+        return chunks.ContainsKey((x, z)) ? chunks[GetChunkCoordinates(x, z)] : null;
     }
 
     public (float x, float z) GetChunkCoordinates(float x, float z)
@@ -52,30 +52,19 @@ public class World : MonoBehaviour, IWorld
         return (Mathf.Floor(x / WorldData.ChunkWidth) * WorldData.ChunkWidth, Mathf.Floor(z / WorldData.ChunkWidth) * WorldData.ChunkWidth);
     }
 
-    private void HandleChunkDrawing()
+    private void AddChildWorldComponents()
     {
-        var currentChunkPos = GetChunkCoordinates(player.transform.position.x, player.transform.position.z);
-
-        foreach (var chunk in loadedChunks)
-            chunk.Deactivate();
-        loadedChunks.Clear();
-
-        for (var x = currentChunkPos.x - Settings.Instance.GameplaySettings.RenderDistance * WorldData.ChunkWidth;
-             x < currentChunkPos.x + Settings.Instance.GameplaySettings.RenderDistance * WorldData.ChunkWidth; x += WorldData.ChunkWidth)
-        for (var z = currentChunkPos.z - Settings.Instance.GameplaySettings.RenderDistance * WorldData.ChunkWidth;
-             z < currentChunkPos.z + Settings.Instance.GameplaySettings.RenderDistance * WorldData.ChunkWidth; z += WorldData.ChunkWidth)
-        {
-            if (!chunks.ContainsKey((x, z)))
-                continue;
-
-            var chunk = chunks[(x, z)];
-            chunk.Activate();
-            loadedChunks.Add(chunk);
-        }
+        foreach (var component in GetComponentsInChildren<IWorldComponent>())
+            RegisterComponent(component);
     }
-    
-    private void OnPlayerSpawn()
+
+    private void RegisterChunks()
     {
-        player = FindObjectOfType<Player>();
+        foreach (var chunk in GetComponentsInChildren<IChunk>())
+        {
+            chunks.Add((chunk.Position.x, chunk.Position.y), chunk);
+            chunk.Initialize();
+            chunk.Deactivate();
+        }
     }
 }

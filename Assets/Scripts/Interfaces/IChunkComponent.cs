@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IChunkComponent
 {
-    void Initialize();
+    void Initialize(IChunk chunk);
     void ChunkLoaded();
     void ChunkUnloaded();
 }

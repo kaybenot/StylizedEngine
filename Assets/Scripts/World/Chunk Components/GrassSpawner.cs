@@ -28,7 +28,7 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
         RenderGrass();
     }
     
-    public void Initialize()
+    public void Initialize(IChunk chunk)
     {
         Spawn();
     }
