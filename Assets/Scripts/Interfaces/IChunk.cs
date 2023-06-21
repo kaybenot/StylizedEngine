@@ -5,9 +5,11 @@ using UnityEngine;
 public interface IChunk
 {
     Vector2 Position { get; }
+    Bounds Bounds { get; }
     float Width { get; }
     bool Active { get; }
     List<IChunkComponent> ChunkComponents { get; }
+    List<IStaticWorldObject> StaticObjects { get; }
 
     /// <summary>
     /// Called during world initialization.
@@ -19,6 +21,16 @@ public interface IChunk
     /// TODO: Make it less hacky
     /// </summary>
     void Create(Vector2 position, float width);
+    
+    /// <summary>
+    /// Currently function used only when validating world in editor.
+    /// </summary>
+    void BindStaticObject(IStaticWorldObject obj);
+
+    /// <summary>
+    /// Currently function used only when validating world in editor.
+    /// </summary>
+    void ClearStaticObjects();
     
     void Activate();
     void Deactivate();

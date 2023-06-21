@@ -20,4 +20,6 @@ public interface IWorld
     /// </summary>
     /// <returns>Chunk root position</returns>
     (float x, float z) GetChunkCoordinates(float x, float z);
+    IEnumerable<IChunk> GetChunks();
+    IEnumerable<IStaticWorldObject> GetStaticWorldObjects();
 }

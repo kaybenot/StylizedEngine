@@ -60,6 +60,13 @@ public class WorldEditorEditor : Editor
 
         if (GUILayout.Button("Create the world"))
             CreateWorld();
+        EditorGUILayout.Space();
+        
+        GUILayout.Label("Helpers", EditorStyles.boldLabel);
+        if (GUILayout.Button("Attach static objects to chunks"))
+            AttachStaticObjectsToChunks();
+        if (GUILayout.Button("Validate world"))
+            ValidateWorld();
     }
 
     private List<string> GetWorlds()
@@ -112,6 +119,38 @@ public class WorldEditorEditor : Editor
         return worldContainer;
     }
 
+    private void ValidateWorld()
+    {
+        AttachStaticObjectsToChunks();
+    }
+
+    private void AttachStaticObjectsToChunks()
+    {
+        var staticObjectContainer = GameObject.Find("Static Objects");
+        if (staticObjectContainer == null)
+        {
+            Debug.LogError("There is no world or there is no object named Static Objects! Script will not continue.");
+            return;
+        }
+
+        var chunkContainer = GameObject.Find("Terrain Container");
+        if (chunkContainer == null)
+        {
+            Debug.LogError("There is no world or there is not object named Terrain Container! Script will not continue");
+            return;
+        }
+
+        // Remove old static objects
+        var staticWorldObjects = staticObjectContainer.GetComponentsInChildren<IStaticWorldObject>();
+        foreach (var staticWO in staticWorldObjects)
+            staticWO.DestroyImmediate();
+
+        // Create new static objects (specify implementation)
+        var visibleStaticWorldObjects = staticObjectContainer.GetComponentsInChildren<MeshRenderer>();
+        foreach (var obj in visibleStaticWorldObjects)
+            obj.gameObject.AddComponent<StaticWorldObject>();
+    }
+
     private void CreateWorld()
     {
         if (worldEditor == null)
@@ -124,6 +163,7 @@ public class WorldEditorEditor : Editor
         worldGO.transform.parent = worldEditor.transform;
         var worldScript = worldGO.AddComponent<World>();
         var chunkRenderer = worldGO.AddComponent<ChunkRenderer>();
+        var staticObjectBinder = worldGO.AddComponent<StaticObjectBinder>();
         
         // Create world scriptable asset
         var worldScriptable = CreateInstance<WorldData>();
@@ -137,6 +177,10 @@ public class WorldEditorEditor : Editor
         // Create terrain container
         var terrainContainer = new GameObject("Terrain Container");
         terrainContainer.transform.parent = worldGO.transform;
+        
+        // Create global object container
+        var globalObjectContainer = new GameObject("Global Objects");
+        globalObjectContainer.transform.parent = worldGO.transform;
         
         // Create static object container
         var staticObjectContainer = new GameObject("Static Objects");
@@ -152,7 +196,7 @@ public class WorldEditorEditor : Editor
         
         // Add world's default static objects
         var playerSpawner = Resources.Load<GameObject>("World Components/[PlayerSpawner]");
-        var spawnerGO = Instantiate(playerSpawner, staticObjectContainer.transform);
+        var spawnerGO = Instantiate(playerSpawner, globalObjectContainer.transform);
         spawnerGO.transform.position = new Vector3(1f, 1.5f, 1f);
         
         // Add world's default session objects
