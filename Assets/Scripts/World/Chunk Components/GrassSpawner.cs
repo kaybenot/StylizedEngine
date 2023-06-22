@@ -20,8 +20,22 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     [SerializeField] private float height = 0.6f;
 
     private static Material grassMaterial;
-    private List<List<Matrix4x4>> matrices;
+    private ComputeBuffer computeBuffer;
+    private ComputeBuffer argsBuffer;
+    private List<ItemInstanceData> instanceDatas;
     private static Mesh mesh;
+    private Bounds chunkBounds;
+
+    private struct ItemInstanceData
+    {
+        public Vector3 Position;
+        public Vector3 Normal;
+
+        public static int Size()
+        {
+            return sizeof(float) * 3 + sizeof(float) * 3;
+        }
+    }
 
     private void Update()
     {
@@ -30,6 +44,7 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     
     public void Initialize(IChunk chunk)
     {
+        chunkBounds = chunk.Bounds;
         Spawn();
     }
 
@@ -52,13 +67,10 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
         var terrainSize = Terrain.terrainData.size;
         var terrainPos = Terrain.GetPosition();
         
-        matrices = new List<List<Matrix4x4>>();
-
-        // Unity supports only 1023 meshes drawn in single instanced call
-        var objectNumber = 0;
-        var instanceGroup = 0;
-        matrices.Add(new List<Matrix4x4>());
+        instanceDatas = new List<ItemInstanceData>();
         
+        InitializeBuffers();
+
         var noiseTexture = Resources.Load<Texture2D>("Grass Noise");
 
         var samplesPerUnitX = noiseTexture.width * density / 4f;
@@ -66,14 +78,6 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
         for (var x = 0; x < samplesPerUnitX * terrainSize.x; x++)
         for (var z = 0; z < samplesPerUnitZ * terrainSize.z; z++)
         {
-            // Create new instance group whenever hit unity support amount
-            if (objectNumber >= 1023)
-            {
-                matrices.Add(new List<Matrix4x4>());
-                instanceGroup++;
-                objectNumber = 0;
-            }
-            
             if(!IsOnNoiseHighValue(x, z, noiseTexture))
                 continue;
 
@@ -82,11 +86,30 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
             
             if (!IsOnGrassTexture(grassPos))
                 continue;
-
-            matrices[instanceGroup].Add(TRS);
-
-            objectNumber++;
+            
+            instanceDatas.Add(new ItemInstanceData
+            {
+                Position = new Vector3(x, 0f , z),
+                Normal = Terrain.terrainData.GetInterpolatedNormal(x, z)
+            });
         }
+
+        int j = 0;
+        computeBuffer = new ComputeBuffer(instanceDatas.Count, ItemInstanceData.Size(),
+            ComputeBufferType.IndirectArguments);
+        computeBuffer.SetData(instanceDatas);
+        grassMaterial.SetBuffer("_PerInstanceData", computeBuffer);
+    }
+    
+    private void InitializeBuffers()
+    {
+        uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
+        args[0] = mesh.GetIndexCount(0);
+        args[1] = 100;
+        args[2] = mesh.GetIndexStart(0);
+        args[3] = mesh.GetBaseVertex(0);
+        argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
+        argsBuffer.SetData(args);
     }
 
     private void CreateGrassMesh()
@@ -180,7 +203,9 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
 
     private void RenderGrass()
     {
-        foreach (var matrix in matrices)
-            Graphics.DrawMeshInstanced(mesh, 0, grassMaterial, matrix, null, ShadowCastingMode.Off, true);
+        // for (var i = 0; i < matrices.Count; i++)
+        //     Graphics.DrawMeshInstanced(mesh, 0, grassMaterial, matrices[i], propertyBlocks[i], ShadowCastingMode.Off, true);
+        
+        Graphics.DrawMeshInstancedIndirect(mesh, 0, grassMaterial, chunkBounds, argsBuffer, 0, null, ShadowCastingMode.Off, true);
     }
 }
