@@ -149,9 +149,6 @@
             "m_Id": "9672533629c84db1ad50a1b100e2d483"
         },
         {
-            "m_Id": "989006bf71564e40926b281554babcfe"
-        },
-        {
             "m_Id": "b250217780b741f08bb7adb944ba8b39"
         }
     ],
@@ -472,20 +469,6 @@
                     "m_Id": "b250217780b741f08bb7adb944ba8b39"
                 },
                 "m_SlotId": -743722720
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "989006bf71564e40926b281554babcfe"
-                },
-                "m_SlotId": 0
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "b250217780b741f08bb7adb944ba8b39"
-                },
-                "m_SlotId": -859135158
             }
         },
         {
@@ -1205,8 +1188,8 @@
     "m_SlotType": 0,
     "m_Hidden": false,
     "m_ShaderOutputName": "_DepthThreshold",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
+    "m_StageCapability": 2,
+    "m_Value": 0.0003000000142492354,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
@@ -3394,41 +3377,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
-    "m_ObjectId": "989006bf71564e40926b281554babcfe",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "Property",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": 406.0000305175781,
-            "y": 914.0000610351563,
-            "width": 158.99996948242188,
-            "height": 33.99993896484375
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "9b672951928c464ca7d781045e79ff34"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_Property": {
-        "m_Id": "ed01a1d25ef54afe947ffe6a23fd2318"
-    }
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "98a22a79a7e94911acc5c4a27521d70c",
     "m_Id": -1724928017,
@@ -3549,21 +3497,6 @@
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "ShadowAttenuation",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "9b672951928c464ca7d781045e79ff34",
-    "m_Id": 0,
-    "m_DisplayName": "DepthThreshold",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
