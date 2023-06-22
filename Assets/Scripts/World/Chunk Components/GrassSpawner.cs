@@ -37,6 +37,12 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
         }
     }
 
+    private void OnDestroy()
+    {
+        computeBuffer.Release();
+        argsBuffer.Release();
+    }
+
     private void Update()
     {
         RenderGrass();
@@ -68,44 +74,32 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
         var terrainPos = Terrain.GetPosition();
         
         instanceDatas = new List<ItemInstanceData>();
-        
-        InitializeBuffers();
 
         var noiseTexture = Resources.Load<Texture2D>("Grass Noise");
 
-        var samplesPerUnitX = noiseTexture.width * density / 4f;
-        var samplesPerUnitZ = noiseTexture.height * density / 4f;
-        for (var x = 0; x < samplesPerUnitX * terrainSize.x; x++)
-        for (var z = 0; z < samplesPerUnitZ * terrainSize.z; z++)
+        for (var x = -terrainSize.x / 2f; x < terrainSize.x / 2f; x += terrainSize.x / 50f)
+        for (var z = -terrainSize.z / 2f; z < terrainSize.z / 2f; z += terrainSize.z / 50f)
         {
-            if(!IsOnNoiseHighValue(x, z, noiseTexture))
-                continue;
-
-            var grassPos = CalculateGrassPosition(terrainPos, x, z, noiseTexture);
-            var TRS = CalculateTRS(grassPos);
+            var instance = new ItemInstanceData();
+            instance.Normal = Vector3.up;
+            instance.Position = new Vector3(x + terrainPos.x, 0f, z + terrainPos.z);
             
-            if (!IsOnGrassTexture(grassPos))
-                continue;
-            
-            instanceDatas.Add(new ItemInstanceData
-            {
-                Position = new Vector3(x, 0f , z),
-                Normal = Terrain.terrainData.GetInterpolatedNormal(x, z)
-            });
+            instanceDatas.Add(instance);
         }
-
-        int j = 0;
+        
+        InitializeBuffers((uint)instanceDatas.Count);
+        
         computeBuffer = new ComputeBuffer(instanceDatas.Count, ItemInstanceData.Size(),
             ComputeBufferType.IndirectArguments);
         computeBuffer.SetData(instanceDatas);
         grassMaterial.SetBuffer("_PerInstanceData", computeBuffer);
     }
     
-    private void InitializeBuffers()
+    private void InitializeBuffers(uint size)
     {
         uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
         args[0] = mesh.GetIndexCount(0);
-        args[1] = 100;
+        args[1] = size;
         args[2] = mesh.GetIndexStart(0);
         args[3] = mesh.GetBaseVertex(0);
         argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
@@ -152,55 +146,7 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
         };
         mesh.uv = uv;
     }
-
-    private Vector2Int TerrainPosition(Vector3 worldPosition)
-    {
-        var terrainPosition = worldPosition - Terrain.transform.position;
-        var mapPosition = new Vector3(terrainPosition.x / Terrain.terrainData.size.x, 0,
-            terrainPosition.z / Terrain.terrainData.size.z);
-        var x = mapPosition.x * Terrain.terrainData.alphamapWidth;
-        var z = mapPosition.z * Terrain.terrainData.alphamapHeight;
-
-        return new Vector2Int((int)x, (int)z);
-    }
     
-    private Vector4 SampleTerrainAlphamap(Vector2Int terrainPosition)
-    {
-        var aMap = Terrain.terrainData.GetAlphamaps (terrainPosition.x, terrainPosition.y, 1, 1);
-        return new Vector4(aMap[0, 0, 0], aMap[0, 0, 1], 0f, 0f);
-
-        // TODO: Support all 4 channels
-        //return new Vector4(aMap[0, 0, 0], aMap[0, 0, 1], aMap[0, 0, 2], aMap[0, 0, 3]);
-    }
-
-    private bool IsOnGrassTexture(Vector3 position)
-    {
-        var alphaMap = SampleTerrainAlphamap(TerrainPosition(position));
-        return !(alphaMap[0] <= 0.5f);
-    }
-
-    private Vector3 CalculateGrassPosition(Vector3 terrainPos, int x, int z, Texture2D noiseTexture)
-    {
-        var grassPos = new Vector3(terrainPos.x + x * (4f / (noiseTexture.width * density)), 0f,
-            terrainPos.z + z * (4f / (noiseTexture.height * density)));
-        grassPos.y = Terrain.SampleHeight(grassPos);
-
-        return grassPos;
-    }
-
-    private static Matrix4x4 CalculateTRS(Vector3 grassPos)
-    {
-        var rotation = Quaternion.identity;
-        var scale = Vector3.one;
-
-        return Matrix4x4.TRS(grassPos, rotation, scale);
-    }
-
-    private bool IsOnNoiseHighValue(int pixelX, int pixelY, Texture2D noiseTexture)
-    {
-        return noiseTexture.GetPixel(pixelX % noiseTexture.width, pixelY % noiseTexture.height) == Color.black;
-    }
-
     private void RenderGrass()
     {
         // for (var i = 0; i < matrices.Count; i++)
