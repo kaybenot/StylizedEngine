@@ -1,5 +1,5 @@
-#ifndef CUSTOM_LIGHT_NODES
-#define CUSTOM_LIGHT_NODES
+#ifndef CUSTOM_GRASS_NODES
+#define CUSTOM_GRASS_NODES
 
 struct InstanceData
 {

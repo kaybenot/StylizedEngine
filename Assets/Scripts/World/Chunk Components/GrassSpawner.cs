@@ -19,12 +19,13 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     [SerializeField] private float width = 0.6f;
     [SerializeField] private float height = 0.6f;
 
-    private static Material grassMaterial;
+    private Material grassMaterial;
     private ComputeBuffer computeBuffer;
     private ComputeBuffer argsBuffer;
     private List<ItemInstanceData> instanceDatas;
     private static Mesh mesh;
     private Bounds chunkBounds;
+    private Vector2 chunkPosition;
 
     private struct ItemInstanceData
     {
@@ -51,6 +52,8 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     public void Initialize(IChunk chunk)
     {
         chunkBounds = chunk.Bounds;
+        chunkPosition = chunk.Position;
+        
         Spawn();
     }
 
@@ -64,8 +67,7 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     
     public void Spawn()
     {
-        if (grassMaterial == null)
-            grassMaterial = Resources.Load<Material>("Grass Material");
+        grassMaterial = new Material(Resources.Load<Material>("Grass Material"));
         
         if (mesh == null)
             CreateGrassMesh();
@@ -77,16 +79,16 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
 
         var noiseTexture = Resources.Load<Texture2D>("Grass Noise");
 
-        for (var x = -terrainSize.x / 2f; x < terrainSize.x / 2f; x += terrainSize.x / 50f)
-        for (var z = -terrainSize.z / 2f; z < terrainSize.z / 2f; z += terrainSize.z / 50f)
+        for (var x = 0f; x < terrainSize.x; x += terrainSize.x / 50f)
+        for (var z = 0f; z < terrainSize.z; z += terrainSize.z / 50f)
         {
             var instance = new ItemInstanceData();
             instance.Normal = Vector3.up;
             instance.Position = new Vector3(x + terrainPos.x, 0f, z + terrainPos.z);
-            
+
             instanceDatas.Add(instance);
         }
-        
+
         InitializeBuffers((uint)instanceDatas.Count);
         
         computeBuffer = new ComputeBuffer(instanceDatas.Count, ItemInstanceData.Size(),
@@ -149,9 +151,6 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     
     private void RenderGrass()
     {
-        // for (var i = 0; i < matrices.Count; i++)
-        //     Graphics.DrawMeshInstanced(mesh, 0, grassMaterial, matrices[i], propertyBlocks[i], ShadowCastingMode.Off, true);
-        
-        Graphics.DrawMeshInstancedIndirect(mesh, 0, grassMaterial, chunkBounds, argsBuffer, 0, null, ShadowCastingMode.Off, true);
+        Graphics.DrawMeshInstancedIndirect(mesh, 0, grassMaterial, chunkBounds, argsBuffer, 0, null, ShadowCastingMode.Off);
     }
 }
