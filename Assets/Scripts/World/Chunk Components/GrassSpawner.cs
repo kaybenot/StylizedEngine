@@ -12,9 +12,7 @@ using UnityEngine.Rendering;
 public class GrassSpawner : MonoBehaviour, IChunkComponent
 {
     [field: SerializeField] public Terrain Terrain { get; set; }
-    
-    [SerializeField] private int density = 1;
-    
+
     [Header("Grass mesh settings")]
     [SerializeField] private float width = 0.6f;
     [SerializeField] private float height = 0.6f;
@@ -25,7 +23,8 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     private List<ItemInstanceData> instanceDatas;
     private static Mesh mesh;
     private Bounds chunkBounds;
-    private Vector2 chunkPosition;
+
+    private static readonly int PerInstanceData = Shader.PropertyToID("_PerInstanceData");
 
     private struct ItemInstanceData
     {
@@ -52,8 +51,7 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     public void Initialize(IChunk chunk)
     {
         chunkBounds = chunk.Bounds;
-        chunkPosition = chunk.Position;
-        
+
         Spawn();
     }
 
@@ -67,6 +65,7 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
     
     public void Spawn()
     {
+        instanceDatas = new List<ItemInstanceData>();
         grassMaterial = new Material(Resources.Load<Material>("Grass Material"));
         
         if (mesh == null)
@@ -74,13 +73,10 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
         
         var terrainSize = Terrain.terrainData.size;
         var terrainPos = Terrain.GetPosition();
-        
-        instanceDatas = new List<ItemInstanceData>();
+        var grassDensity = Settings.Instance.GameplaySettings.GrassDensity;
 
-        var noiseTexture = Resources.Load<Texture2D>("Grass Noise");
-
-        for (var x = 0f; x < terrainSize.x; x += terrainSize.x / 50f)
-        for (var z = 0f; z < terrainSize.z; z += terrainSize.z / 50f)
+        for (var x = 0f; x < terrainSize.x; x += terrainSize.x / (10f * grassDensity))
+        for (var z = 0f; z < terrainSize.z; z += terrainSize.z / (10f * grassDensity))
         {
             var instance = new ItemInstanceData();
             instance.Normal = Vector3.up;
@@ -94,7 +90,7 @@ public class GrassSpawner : MonoBehaviour, IChunkComponent
         computeBuffer = new ComputeBuffer(instanceDatas.Count, ItemInstanceData.Size(),
             ComputeBufferType.IndirectArguments);
         computeBuffer.SetData(instanceDatas);
-        grassMaterial.SetBuffer("_PerInstanceData", computeBuffer);
+        grassMaterial.SetBuffer(PerInstanceData, computeBuffer);
     }
     
     private void InitializeBuffers(uint size)

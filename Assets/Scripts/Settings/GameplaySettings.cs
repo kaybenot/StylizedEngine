@@ -6,4 +6,5 @@ using UnityEngine;
 public class GameplaySettings : ScriptableObject
 {
     public int RenderDistance = 2;
+    public int GrassDensity = 5;
 }
